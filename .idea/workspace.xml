@@ -1,10 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8d6b6b8-a36e-420e-b747-13d93310f728" name="Changes" comment="Instant Commit" />
+    <list default="true" id="e982637f-3cb1-4c32-bfd8-3007f5bca08b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/migrations/0002_rename_image_content_imagecontent.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/migrations/0003_alter_imagecontent_title.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/migrations/0004_alter_imagecontent_title.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/migrations/0005_alter_imagecontent_title.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/migrations/0006_alter_imagecontent_title.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/migrations/0007_alter_imagecontent_link_alter_imagecontent_title.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/static/app/css/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/static/app/img/django.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/templates/app/imagecontent_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/templates/app/imagecontent_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/templates/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/templates/registration/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/templates/registration/to_logout.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/app/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/lab_2_django/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/lab_2_django/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/lab_2_django/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/lab_2_django/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/lab_2_django/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab_2_django/manage.py" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,34 +42,88 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "master",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "XDsiroriginal"
   }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/XDsiroriginal/lab_2_django.git",
+    "accountId": "14597f35-bd23-4a65-8777-968cdfd60ca3"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="36FP0DMRMMDp7nggtNsCi1Iibtk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\XDsir\PycharmProjects\lab_2_django\lab_2_django" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="lab_2_django" type="Python.DjangoServer" factoryName="Django server">
+      <module name="lab_2_django" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-PY-251.25410.159" />
+        <option value="bundled-python-sdk-e0ed3721d81e-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.25410.159" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="Instant Commit">
-      <option name="closed" value="true" />
-      <created>1764598757810</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1764598757810</updated>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e982637f-3cb1-4c32-bfd8-3007f5bca08b" name="Changes" comment="" />
+      <created>1764599122388</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764599122388</updated>
+      <workItem from="1764599123784" duration="130000" />
     </task>
-    <task id="LOCAL-00002" summary="Instant Commit">
-      <option name="closed" value="true" />
-      <created>1764598839045</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1764598839045</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Instant Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Instant Commit" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>
