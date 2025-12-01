@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+    <div class="authentication_content">
+        <a href=""><h3>профиль</h3></a>
+    </div>
+    <div class="main_content">
+        {% if image_list %}
+            {% for image in image_list %}
+                <a href="{{ image.get_absolute_url }}"><img class="image_content" src="{{ image.get_image_link }}"
+                                                            alt="{{ image.get_image_title }}"></a>
+            {% endfor %}
+            <div class="paginator_content">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">Предыдущая страница</a>
+                {% endif %}
+                <a href="?page=1">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</a>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Следующая страница</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>По какой то причине нет картинок(</p>
+        {% endif %}
+    </div>
+{% endblock %}
