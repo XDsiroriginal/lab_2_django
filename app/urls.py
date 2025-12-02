@@ -1,14 +1,20 @@
 from django.urls import path
 from . import views
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import PasswordChangeDoneView
 
 from .views import to_logout
+from .views import to_profile
+from .views import change_user_avatar
 
 urlpatterns = [
-    path('', views.ImageListView.as_view(), name='index'),
+    path('accounts/image-list', views.ImageListView.as_view(), name='image-list'),
+]
+
+urlpatterns += [
+    path('', views.index, name='index'),
 ]
 
 urlpatterns += [
@@ -28,4 +34,12 @@ urlpatterns += [
     path('accounts/password_change/', PasswordChangeView.as_view(), name='password_change'),
     path('accounts/password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
 
+]
+
+urlpatterns += [
+    path('profile', to_profile, name='profile'),
+]
+
+urlpatterns += [
+    path('image/<int:pk>/change_user_avatar/', change_user_avatar, name='change_user_avatar'),
 ]

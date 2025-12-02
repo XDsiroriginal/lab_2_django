@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 class ImageContent(models.Model):
     title = models.CharField(max_length=100)
@@ -16,3 +17,7 @@ class ImageContent(models.Model):
 
     def get_absolute_url(self):
         return reverse('image-detail', args=[str(self.id)])
+
+class Profile(models.Model):
+    avatarlink = models.TextField()
+    username = models.OneToOneField(User, on_delete=models.CASCADE)

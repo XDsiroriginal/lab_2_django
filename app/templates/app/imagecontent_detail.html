@@ -3,13 +3,13 @@
 {% block title %}Картинка{% endblock %}
 {% block content %}
     <div class="content">
-        <a class="to_back" href="{% url 'index' %}"><p>Вернуться назад</p></a>
+        <a class="to_back" href="{{ request.META.HTTP_REFERER }}"><p>Вернуться назад</p></a>
         <div class="image_detail_block">
             {% if user.is_authenticated %}
                 <h2>{{ imagecontent.title }}</h2>
-                <img src="{{ imagecontent.link }}" alt="{{ imagecontent.title }}">
+                <a href="{% url 'change_user_avatar' pk=imagecontent.pk %}"><img src="{% static 'app/img/' %}{{ imagecontent.link }}" alt="{{ imagecontent.title }}"></a>
             {% else %}
-                <h3>Требуется войти для просмотра контента</h3>
+                <h3>Требуется войти что бы сменить аватарку</h3>
                 <a href="{% url 'login' %}"><h3>войти</h3></a>
             {% endif %}
         </div>

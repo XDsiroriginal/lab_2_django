@@ -15,12 +15,15 @@
                     <a href="{% url 'index' %}"><p>Перейти на главную страницу</p></a>
                 </div>
             {% else %}
-                <form method="post" class="login_form">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="hidden" name="next" value="{{ next }}">
-                    <input type="submit" value="Войти">
-                </form>
+                <div class="login_form_content">
+                    <form method="post" class="login_form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <input type="submit" value="Войти">
+                    </form>
+                    <a href="">нет аккаунта? зарегестрироваться</a>
+                </div>
             {% endif %}
         </div>
     </div>
