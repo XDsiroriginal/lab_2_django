@@ -8,6 +8,7 @@
             {% if user.is_authenticated %}
                 <form action="{% url 'logout' %}" method="post" class="logout_form">
                     {% csrf_token %}
+                    <a href="{% url 'profile' %}">Вернуться назад</a>
                     <input type="submit" value="Выйти">
                 </form>
             {% else %}
