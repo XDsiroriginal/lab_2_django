@@ -1,33 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="e982637f-3cb1-4c32-bfd8-3007f5bca08b" name="Changes" comment="Instant Commit">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/app/img/none.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/registration/email_change.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/registration/first_name_change.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/registration/last_name_change.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/registration/login_change.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/registration/password_change_done.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/registration/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/app/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/app/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/registration/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/registration/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/registration/to_logout.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/registration/to_logout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "XDsiroriginal"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;XDsiroriginal&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/XDsiroriginal/lab_2_django.git",
-    "accountId": "14597f35-bd23-4a65-8777-968cdfd60ca3"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/XDsiroriginal/lab_2_django.git&quot;,
+    &quot;accountId&quot;: &quot;14597f35-bd23-4a65-8777-968cdfd60ca3&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="36FP0DMRMMDp7nggtNsCi1Iibtk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -35,16 +59,27 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "django.template.preview.state": "SHOW_EDITOR",
     "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/XDsir/PycharmProjects/lab_2_django/app/templates/registration",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\XDsir\PycharmProjects\lab_2_django\app\templates\registration" />
+      <recent name="C:\Users\XDsir\PycharmProjects\lab_2_django\app\static\app\img" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\XDsir\PycharmProjects\lab_2_django\lab_2_django" />
     </key>
@@ -90,7 +125,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1764599122388</updated>
-      <workItem from="1764599123784" duration="274000" />
+      <workItem from="1764599123784" duration="310000" />
+      <workItem from="1764668776864" duration="35000" />
+      <workItem from="1764675178418" duration="9706000" />
     </task>
     <task id="LOCAL-00001" summary="Instant Commit">
       <option name="closed" value="true" />
@@ -100,7 +137,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764599272392</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Instant Commit">
+      <option name="closed" value="true" />
+      <created>1764599409528</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764599409528</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

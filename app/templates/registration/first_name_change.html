@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Смена имени{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="user_authentication_block">
+            <h2>Смена имени</h2>
+            <div class="image_content">
+                <img src="{% static 'app/img/django.png' %}" alt="крутой джанга">
+            </div>
+            <div class="login_form_content">
+                <p>{{ user.first_name }}</p>
+                <form method="post" class="login_form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <input type="submit" value="Сменить имя">
+                </form>
+                <a href="{{ request.META.HTTP_REFERER }}">назад</a>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

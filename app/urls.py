@@ -1,13 +1,14 @@
-from django.urls import path
+from django.urls import path, reverse_lazy
 from . import views
-from django.contrib.auth.views import LoginView, PasswordResetView
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.views import PasswordChangeDoneView
 
-from .views import to_logout
+from .views import to_logout, first_name_change, last_name_change, email_change
 from .views import to_profile
 from .views import change_user_avatar
+from .views import register_view
+from .views import login_change
 
 urlpatterns = [
     path('accounts/image-list', views.ImageListView.as_view(), name='image-list'),
@@ -31,9 +32,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('accounts/password_change/', PasswordChangeView.as_view(), name='password_change'),
-    path('accounts/password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
-
+    path('accounts/password_change/', PasswordChangeView.as_view(success_url=reverse_lazy('profile')), name='password_change'),
 ]
 
 urlpatterns += [
@@ -42,4 +41,15 @@ urlpatterns += [
 
 urlpatterns += [
     path('image/<int:pk>/change_user_avatar/', change_user_avatar, name='change_user_avatar'),
+]
+
+urlpatterns += [
+    path('accounts/register', register_view, name='register'),
+]
+
+urlpatterns += [
+    path('accounts/change_login/', login_change, name='login_change'),
+    path('accounts/change_first_name/', first_name_change, name='first_name_change'),
+    path('accounts/change_last_name/', last_name_change, name='last_name_change'),
+    path('accounts/change_email/', email_change, name='email_change'),
 ]

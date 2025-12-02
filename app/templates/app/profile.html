@@ -11,23 +11,42 @@
             <div class="main_bar">
                 <div class="user_avatar_and_name">
                     <div class="user_avatar">
-                        <a href="{% url 'image-list' %}"><img src="{% static 'app/img/' %}{{ profile.avatarlink }}" alt="{{ user.get_username }} avatar"></a>
+                        <a href="{% url 'image-list' %}"><img src="{% static 'app/img/' %}{{ profile.avatarlink }}"
+                                                              alt="{{ user.get_username }} avatar"></a>
                     </div>
                     <h3>{{ user.get_username }}</h3>
                 </div>
                 <div class="user_information">
-                    <a href=""><p>{{ user.get_username }}</p></a>
-                    <a href=""><p>Сменить пароль</p></a>
-                    <div><a href=""><p>{{ user.first_name }}</p></a> <a href=""><p>{{ user.last_name }}</p></a></div>
-                    <a href=""><p>{{ user.email }}</p></a>
+                    <a href="{% url 'login_change' %}"><p>{{ user.get_username }}</p></a>
+                    <a href="{% url 'password_change' %}"><p>Сменить пароль</p></a>
+                    <div>
+                        {% if user.first_name %}
+                            <a href="{% url 'first_name_change' %}"><p>{{ user.first_name }}</p></a>
+                        {% else %}
+                            <a href="{% url 'first_name_change' %}"><p>У вас не указано имя.</p></a>
+                        {% endif %}
+
+                        {% if user.last_name %}
+                            <a href="{% url 'last_name_change' %}"><p>{{ user.last_name }}</p></a>
+                        {% else %}
+                            <a href="{% url 'last_name_change' %}"><p>У вас не указана фамилия.</p></a>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'email_change' %}"><p>{{ user.email }}</p></a>
                     <p>
                         {% if  user.groups == 'auth.Group.None' %}
                             {{ user.groups }}
                         {% else %}
                             у вас нет группы
-                        {% endif %} 
+                        {% endif %}
                     </p>
-                    <p>{{ user.get_user_permissions }}</p>
+                    <p>
+                        {% if user.get_user_permissions == 'set()' %}
+                            {{ user.get_user_permissions }}
+                        {% else %}
+                            у вас нет прав доступа
+                        {% endif %}
+                    </p>
                 </div>
             </div>
         </div>
