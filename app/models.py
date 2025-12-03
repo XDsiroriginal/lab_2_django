@@ -24,4 +24,29 @@ class Profile(models.Model):
     patronymic = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
-        permissions = (('worker', 'Работник'),)
+        permissions = (
+            ('worker', 'Работник'),
+            ('user', 'Пользователь')
+        )
+
+class application(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    ALL_STATUS = (
+        ('n', 'Новая заявка'),
+        ('w', 'Принята в работу'),
+        ('c', 'Выполнена'),
+        ('r', 'Отклонена')
+    )
+    status = models.CharField(max_length=1, choices=ALL_STATUS, blank=True, default='n')
+
+    ALL_CATEGORIES = (
+        ('3', '3D Дизайн'),
+        ('2', '2D Дизайн'),
+        ('e', 'Эскиз'),
+        ('l', 'Логотип')
+    )
+    categories = models.CharField(max_length=1, choices=ALL_CATEGORIES, blank=True, default='n')
+
+    image = models.ImageField(upload_to='images/')
+    username = models.OneToOneField(User, on_delete=models.CASCADE)

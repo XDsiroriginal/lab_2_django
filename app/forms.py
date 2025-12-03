@@ -1,7 +1,9 @@
+from random import choices
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .validators import validate_cyrillic_and_spaces
+from .validators import validate_cyrillic_and_spaces, validate_image
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True, label='Электронная почта')
@@ -28,3 +30,19 @@ class EmailChangeForm(forms.Form):
 
 class PatronymicChangeForm(forms.Form):
     patronymic = forms.CharField(required=True, label='Отчество', validators=[validate_cyrillic_and_spaces])
+
+class AplicationForm(forms.Form):
+    title = forms.CharField(required=True, label='Название заявки')
+    description = forms.CharField(required=True, label='Введите описание заявки')
+    status = 'n'
+    categories = forms.ChoiceField(
+        required=True,
+        label='Категория заявки',
+        choices=[
+            ('3', '3D Дизайн'),
+            ('2', '2D Дизайн'),
+            ('e', 'Эскиз'),
+            ('l', 'Логотип'),
+        ]
+    )
+    image = forms.ImageField(required=True, validators=[validate_image])

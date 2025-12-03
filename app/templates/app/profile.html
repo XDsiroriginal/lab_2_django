@@ -6,6 +6,7 @@
         <div class="profile_content">
             <div class="top_bar">
                 <h2>Добро пожаловать {{ user.get_username }}</h2>
+                <a href="{% url 'index' %}">На главную страницу</a>
                 <a href="{% url 'to_logout' %}">выйти из аккаунта</a>
             </div>
             <div class="main_bar">
@@ -16,7 +17,7 @@
                     </div>
                     <h3>{{ user.get_username }}</h3>
                     {% if perms.app.worker %}
-                    	<a href="{% url 'admin_profile' %}">Войти в панель работника</a>
+                        <a href="{% url 'admin_profile' %}">Войти в панель работника</a>
                     {% endif %}
                 </div>
                 <div class="user_information">
@@ -46,12 +47,27 @@
                         {% if perms.app.worker %}
                             Вы - работник
                         {% else %}
-                           Вы - зарегестрированный пользователь
+                            Вы - зарегестрированный пользователь
                         {% endif %}
                     </p>
                 </div>
             </div>
         </div>
+
+        <div class="profile_content">
+            {% if perms.app.user %}
+                <div class="top_bar">
+                    <h2>Мои заявки ({{ user.get_username }})</h2>
+                    <a href="">Создать новую</a>
+                </div>
+            {% else %}
+                <div class="top_bar">
+                    <h2>Все заявки пользователей</h2>
+                    <a href="">Начать обработку</a>
+                </div>
+            {% endif %}
+        </div>
+
     {% else %}
         <div class="content">
             <a class="to_back" href="{% url 'index' %}"><p>Вернуться назад</p></a>
