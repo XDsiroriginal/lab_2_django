@@ -170,3 +170,18 @@ def patronymic_change(request):
         form = PatronymicChangeForm(initial={'patronymic': profile.patronymic})
 
     return render(request, 'registration/patronymic.html', {'form': form})
+
+def admin_profile_view(request):
+    user = request.user
+    if user.is_authenticated:
+        profile = user.profile
+        return render(
+            request,
+            'app/admin_profile.html',
+            {'profile': profile}
+        )
+    else:
+        return render(
+            request,
+            'app/profile.html',
+        )

@@ -22,3 +22,6 @@ class Profile(models.Model):
     avatarlink = models.TextField()
     username = models.OneToOneField(User, on_delete=models.CASCADE)
     patronymic = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        permissions = (('worker', 'Работник'),)

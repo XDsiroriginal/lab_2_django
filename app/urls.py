@@ -5,15 +5,14 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth.views import PasswordChangeView
 
 from .views import to_logout, first_name_change, last_name_change, email_change, patronymic_change
-from .views import to_profile
-from .views import change_user_avatar
-from .views import register_view
-from .views import login_change
+from .views import to_profile, change_user_avatar, register_view, login_change
+from .views import admin_profile_view
 
 urlpatterns = [
     path('accounts/image-list', views.ImageListView.as_view(), name='image-list'),
     path(r'^image/(?P<pk>\d+)$', views.ImageDetailView.as_view(), name='image-detail'),
     path('profile', to_profile, name='profile'),
+    path('profile/admin', admin_profile_view, name='admin_profile'),
 ]
 
 urlpatterns += [

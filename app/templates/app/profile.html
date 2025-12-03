@@ -15,6 +15,9 @@
                                                               alt="{{ user.get_username }} avatar"></a>
                     </div>
                     <h3>{{ user.get_username }}</h3>
+                    {% if perms.app.worker %}
+                    	<a href="{% url 'admin_profile' %}">Войти в панель работника</a>
+                    {% endif %}
                 </div>
                 <div class="user_information">
                     <a href="{% url 'login_change' %}"><p>{{ user.get_username }}</p></a>
@@ -40,18 +43,10 @@
                     </div>
                     <a href="{% url 'email_change' %}"><p>{{ user.email }}</p></a>
                     <p>
-                        {% if user.groups.all == '<QuerySet [<Group: users>]>' %}
-                            Зарегестрированный пользователь
-                        {% elif user.groups.all == '<QuerySet [<Group: worker>]>'%}
+                        {% if perms.app.worker %}
+                            Вы - работник
                         {% else %}
-                           у вас нет группы
-                        {% endif %}
-                    </p>
-                    <p>
-                        {% if user.get_user_permissions == 'set()' %}
-                            {{ user.get_user_permissions }}
-                        {% else %}
-                            у вас нет прав
+                           Вы - зарегестрированный пользователь
                         {% endif %}
                     </p>
                 </div>

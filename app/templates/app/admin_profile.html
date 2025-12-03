@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Профиль Администратора{% endblock %}
+{% load static %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if perms.app.worker %}
+            <div class="profile_content">
+                <div class="top_bar">
+                    <h2>Панель работника {{ user.get_username }}</h2>
+                    <a href="{% url 'to_logout' %}">выйти из аккаунта</a>
+                </div>
+                <div class="main_bar">
+                    <div class="user_avatar_and_name">
+                        <div class="user_avatar">
+                            <a href="{% url 'image-list' %}"><img src="{% static 'app/img/' %}{{ profile.avatarlink }}"
+                                                                  alt="{{ user.get_username }} avatar"></a>
+                        </div>
+                        <h3>{{ user.get_username }}</h3>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="content">
+            <div class="image_detail_block">
+                <h3>У вас нет доступа к данной странице</h3>
+                <a href="{% url 'profile' %}"><h3>вернуться в профиль</h3></a>
+            </div>
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="content">
+            <a class="to_back" href="{% url 'index' %}"><p>Вернуться назад</p></a>
+            <div class="image_detail_block">
+                <h3>Вы не вошли в аккаунт</h3>
+                <a href="{% url 'login' %}"><h3>войти</h3></a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

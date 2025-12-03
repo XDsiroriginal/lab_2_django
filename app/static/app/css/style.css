@@ -202,7 +202,7 @@ p {
     width: auto;
     height: auto;
     display: grid;
-    grid-template-rows: repeat(6,auto);
+    grid-template-rows: repeat(5,auto);
     border-left: 2px solid black;
     padding-left: 10px;
 }
