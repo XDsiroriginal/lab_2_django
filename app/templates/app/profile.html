@@ -31,20 +31,27 @@
                         {% else %}
                             <a href="{% url 'last_name_change' %}"><p>У вас не указана фамилия.</p></a>
                         {% endif %}
+
+                        {% if profile.patronymic %}
+                            <a href="{% url 'patronymic_change' %}"><p>{{ profile.patronymic }}</p></a>
+                        {% else %}
+                            <a href="{% url 'patronymic_change' %}"><p>У вас не указано отчество.</p></a>
+                        {% endif %}
                     </div>
                     <a href="{% url 'email_change' %}"><p>{{ user.email }}</p></a>
                     <p>
-                        {% if  user.groups == 'auth.Group.None' %}
-                            {{ user.groups }}
+                        {% if user.groups.all == '<QuerySet [<Group: users>]>' %}
+                            Зарегестрированный пользователь
+                        {% elif user.groups.all == '<QuerySet [<Group: worker>]>'%}
                         {% else %}
-                            у вас нет группы
+                           у вас нет группы
                         {% endif %}
                     </p>
                     <p>
                         {% if user.get_user_permissions == 'set()' %}
                             {{ user.get_user_permissions }}
                         {% else %}
-                            у вас нет прав доступа
+                            у вас нет прав
                         {% endif %}
                     </p>
                 </div>

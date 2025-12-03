@@ -1,12 +1,8 @@
-# from tkinter import Image
-from idlelib.pyparse import trans
-from urllib import request
-from django.contrib.auth.models import User
-from django.core.paginator import Paginator
+from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 from django.views import generic
 from .models import ImageContent, Profile
-from .forms import RegisterForm, LoginChangeForm, FirstNameChangeForm, LastNameChangeForm, EmailChangeForm
+from .forms import RegisterForm, LoginChangeForm, FirstNameChangeForm, LastNameChangeForm, EmailChangeForm, PatronymicChangeForm
 
 
 def index(request):
@@ -66,7 +62,12 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user_group = Group.objects.get(name='users')
+            user.groups.add(user_group)
             profile = Profile(avatarlink='none.jpg', username=user)
+            profile.patronymic = form.cleaned_data['patronymic']
             profile.save()
             return redirect('login')
     else:
@@ -150,3 +151,22 @@ def email_change(request):
         form = EmailChangeForm(initial={'email': user.email})
 
     return render(request, 'registration/email_change.html', {'form': form})
+
+def patronymic_change(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    user = request.user
+    profile = user.profile
+
+    if request.method == 'POST':
+        form = PatronymicChangeForm(request.POST)
+        if form.is_valid():
+            new_user_patronymic = form.cleaned_data['patronymic']
+            profile.patronymic = new_user_patronymic
+            profile.save()
+            return redirect('profile')
+    else:
+        form = PatronymicChangeForm(initial={'patronymic': profile.patronymic})
+
+    return render(request, 'registration/patronymic.html', {'form': form})
