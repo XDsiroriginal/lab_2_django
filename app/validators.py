@@ -11,8 +11,8 @@ def validate_cyrillic_and_spaces(value):
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 
-def validate_image(value): # Исправлено название функции (iamge -> image)
-    max_size_in_bytes = 2 * 1024 * 1024
+def validate_image(value):
+    max_size = 2 * 1024 * 1024
     extension_validator = FileExtensionValidator(allowed_extensions=('jpg', 'jpeg', 'png', 'bmp'))
     try:
         extension_validator(value)
@@ -21,7 +21,7 @@ def validate_image(value): # Исправлено название функци�
             'Ваш формат не подходит, загружать можно файлы "jpg", "jpeg", "png", "bmp".'
         )
 
-    if value.size > max_size_in_bytes:
+    if value.size > max_size :
         raise ValidationError(
             'Ваш файл превышает размер 2 мегабайта'
         )

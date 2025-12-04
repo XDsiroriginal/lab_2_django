@@ -29,6 +29,16 @@ class Profile(models.Model):
             ('user', 'Пользователь')
         )
 
+    def __str__(self):
+        return self.username + ' профиль'
+
+class Category(models.Model):
+    category_full_name = models.CharField(max_length=100)
+    category_char = models.CharField(max_length=1, blank=False)
+
+    def __str__(self):
+        return self.category_full_name
+
 class application(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -38,15 +48,16 @@ class application(models.Model):
         ('c', 'Выполнена'),
         ('r', 'Отклонена')
     )
-    status = models.CharField(max_length=1, choices=ALL_STATUS, blank=True, default='n')
+    status = models.CharField(max_length=1, choices=ALL_STATUS, blank=False, default='n')
+    date = models.DateField(auto_now=False, auto_now_add=True)
 
-    ALL_CATEGORIES = (
-        ('3', '3D Дизайн'),
-        ('2', '2D Дизайн'),
-        ('e', 'Эскиз'),
-        ('l', 'Логотип')
-    )
-    categories = models.CharField(max_length=1, choices=ALL_CATEGORIES, blank=True, default='n')
+    categories = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-    image = models.ImageField(upload_to='images/')
-    username = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/', blank=False, null=False)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return reverse('application-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return self.title

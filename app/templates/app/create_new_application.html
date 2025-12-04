@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Новая заявка{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="user_authentication_block">
+            <h2>Создание новой заявки</h2>
+            {% if user.is_authenticated %}
+                <div class="image_content">
+                    <img src="{% static 'app/img/django.png' %}" alt="крутой джанга">
+                </div>
+                <div class="login_form_content">
+                    <form method="post" class="login_form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <input type="submit" value="Оставить заявку">
+                    </form>
+                    <a href="{% url 'profile' %}">назад</a>
+                </div>
+            {% else %}
+                <p>Вы не выполнели вход на сайт</p>
+                <a href="{% url 'to_logout' %}">Выполнить выход</a>
+                <a href="{% url 'index' %}"><p>Перейти на главную страницу</p></a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %} 

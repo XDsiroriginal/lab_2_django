@@ -7,6 +7,7 @@ from django.contrib.auth.views import PasswordChangeView
 from .views import to_logout, first_name_change, last_name_change, email_change, patronymic_change
 from .views import to_profile, change_user_avatar, register_view, login_change
 from .views import admin_profile_view
+from .views import create_new_application, ApplicationDetailView, application_delete
 
 urlpatterns = [
     path('accounts/image-list', views.ImageListView.as_view(), name='image-list'),
@@ -34,4 +35,10 @@ urlpatterns += [
     path('accounts/change_patronymic/', patronymic_change, name='patronymic_change'),
     path('accounts/password_change/', PasswordChangeView.as_view(success_url=reverse_lazy('profile')), name='password_change'),
     path('image/<int:pk>/change_user_avatar/', change_user_avatar, name='change_user_avatar'),
+]
+
+urlpatterns += [
+    path('profile/create_new_application', create_new_application, name='create_new_application'),
+    path(r'^profile/application/(?P<pk>\d+)$', views.ApplicationDetailView.as_view(), name='application-detail'),
+    path(r'^profile/application/<int:pk>/delete', application_delete, name='application_delete'),
 ]

@@ -1,8 +1,12 @@
+from gc import get_objects
+
 from django.contrib.auth.models import User, Group
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
-from .models import ImageContent, Profile
-from .forms import RegisterForm, LoginChangeForm, FirstNameChangeForm, LastNameChangeForm, EmailChangeForm, PatronymicChangeForm
+from .models import ImageContent, Profile, application
+from .forms import RegisterForm, LoginChangeForm, FirstNameChangeForm, LastNameChangeForm, EmailChangeForm, \
+    PatronymicChangeForm, ApplicationForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
@@ -10,6 +14,7 @@ def index(request):
         request,
         'app/index.html',
     )
+
 
 def to_logout(request):
     return render(
@@ -21,6 +26,9 @@ def to_logout(request):
 class ImageDetailView(generic.DetailView):
     model = ImageContent
 
+class ApplicationDetailView(generic.DetailView):
+    model = application
+
 
 class ImageListView(generic.ListView):
     model = ImageContent
@@ -30,13 +38,29 @@ class ImageListView(generic.ListView):
 
 def to_profile(request):
     user = request.user
+
     if user.is_authenticated:
         profile = user.profile
+        all_applications = user.application_set.order_by('-date').all()
+        application_per_page = 3
+        paginator = Paginator(all_applications, application_per_page)
+        page_number = request.GET.get('page')
+        try:
+            application_on_page = paginator.page(page_number)
+        except PageNotAnInteger:
+            application_on_page = paginator.page(1)
+        except EmptyPage:
+            application_on_page = paginator.page(paginator.num_pages)
         return render(
             request,
             'app/profile.html',
-            {'profile': profile}
+            {
+                'profile': profile,
+                'application_on_page': application_on_page,
+                'paginator': paginator,
+            }
         )
+
     else:
         return render(
             request,
@@ -50,11 +74,7 @@ def change_user_avatar(request, pk):
     profile = user.profile
     profile.avatarlink = image.link
     profile.save()
-    return render(
-        request,
-        'app/profile.html',
-        {'profile': profile}
-    )
+    return redirect('profile')
 
 
 def register_view(request):
@@ -98,6 +118,7 @@ def login_change(request):
 
     return render(request, 'registration/login_change.html', {'form': form})
 
+
 def first_name_change(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -115,6 +136,7 @@ def first_name_change(request):
         form = FirstNameChangeForm(initial={'first_name': user.first_name})
 
     return render(request, 'registration/first_name_change.html', {'form': form})
+
 
 def last_name_change(request):
     if not request.user.is_authenticated:
@@ -134,6 +156,7 @@ def last_name_change(request):
 
     return render(request, 'registration/last_name_change.html', {'form': form})
 
+
 def email_change(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -151,6 +174,7 @@ def email_change(request):
         form = EmailChangeForm(initial={'email': user.email})
 
     return render(request, 'registration/email_change.html', {'form': form})
+
 
 def patronymic_change(request):
     if not request.user.is_authenticated:
@@ -171,6 +195,7 @@ def patronymic_change(request):
 
     return render(request, 'registration/patronymic.html', {'form': form})
 
+
 def admin_profile_view(request):
     user = request.user
     if user.is_authenticated:
@@ -185,3 +210,30 @@ def admin_profile_view(request):
             request,
             'app/profile.html',
         )
+
+
+def create_new_application(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_application = form.save(commit=False)
+            new_application.username = request.user
+            new_application.save()
+            return redirect('profile')
+        else:
+            print("Form errors:", form.errors)
+    else:
+        form = ApplicationForm()
+
+    return render(request, 'app/create_new_application.html', {'form': form})
+
+def application_delete(request, pk):
+    this_application = get_object_or_404(application,  pk=pk)
+    if request.method == 'POST':
+        this_application.delete()
+        return redirect('profile')
+    else:
+        return redirect('index')
