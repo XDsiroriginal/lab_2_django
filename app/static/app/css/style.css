@@ -17,6 +17,11 @@
 .delete {
     color: red;
 }
+.delete_comfirm {
+    color: red;
+    font-size: 300%;
+}
+
 
 .user_authentication_block {
     width: 80vw;
@@ -176,6 +181,11 @@ p {
     grid-template-columns: repeat(2, auto);
     grid-template-rows: repeat(3, auto);
     margin: auto;
+    gap: 10px;
+}
+
+.filter_content > a {
+    margin-right: 10px;
 }
 
 .top_bar {
@@ -194,6 +204,18 @@ p {
     grid-column: 1;
     grid-row: 2;
     margin-top: 50px;
+}
+
+
+.main_bar-admin {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: 50px;
+    border-left: 1px solid black;
+    padding-left: 20px;
 }
 
 .user_avatar {
@@ -241,9 +263,10 @@ p {
     justify-content: center;
 }
 
-application-detail {
+.application-detail {
+    width: 80%;
     display: grid;
-    grid-template-rows: repeat(4, auto);
+    grid-template-rows: repeat(5, auto);
     gap: 5px;
     justify-content: center;
 }
@@ -251,6 +274,11 @@ application-detail {
 .application-detail-description {
     width: 100%;
 }
+
+.change {
+    font-size: 200%;
+}
+
 
 .application_info {
     display: flex;
@@ -263,6 +291,11 @@ application-detail {
     justify-content: center;
     align-items: flex-end;
     gap: 5px;
+}
+
+.application_image_content-detail {
+    display: flex;
+    justify-content: center;
 }
 
 .application_image_content-detail > img {
@@ -286,4 +319,8 @@ application-detail {
 .pagination {
     grid-column: 1;
     grid-row: 3;
+}
+
+.cange {
+    color: green;
 }

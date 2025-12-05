@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Картинка{% endblock %}
+{% block title %}Подтверждение на удаление{% endblock %}
 {% block content %}
     <div class="content-detail">
         <a class="to_back" href="{% url 'profile' %}"><p>Вернуться назад</p></a>
         {% if user.is_authenticated %}
-            <a href="{% url 'application_delete_comfirm' pk=application.pk%}" style="color: red">Удалить</a>
+            <form action="{% url 'application_delete' pk=application.pk %}" method="post">
+                {% csrf_token %}
+                {% if application.status == 'n' %}
+                    <h1 style="color:red">ВЫ ТОЧНО УВЕРЕНЫ ЧТО ХОТИТЕ УДАЛИТЬ?</h1>
+                	<button type="submit" class="delete_comfirm">ДА!ДА!ДА!ДА!ДА!</button>
+                    <a href="{% url 'profile' %}" style="color: green">нет(</a>
+                {% endif %}
+            </form>
             <div class="application-detail">
                 <div class="application_title_content"><h3>{{ application.title }}</h3>
                     <p>({{ application.date }})</p>

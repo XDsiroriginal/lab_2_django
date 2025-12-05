@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Профиль Администратора{% endblock %}
+{% block title %}Работа с категориями{% endblock %}
 {% load static %}
 {% block content %}
     {% if user.is_authenticated %}
@@ -21,11 +21,19 @@
             </div>
             <div class="profile_content">
                 <div class="top_bar">
-                    <h2>Настройки администратора</h2>
-                    <a href="{% url 'profile' %}">В профиль</a>
+                    <h3>Настройки категорий</h3>
                 </div>
                 <div class="main_bar-admin">
-                    <a href="{% url 'categories_change' %}">Работа с категориями</a>
+                    <ul>
+                        <li><a href="{% url 'create_new_application' %}">Создать новую категорию</a></li>
+                        <p>Существующие категории:</p>
+                        <ul> 
+                            {% for category in categories %}
+                            	<li><a href="">{{ category.category_full_name }}</a></li>
+                            {% endfor %}
+
+                        </ul>
+                    </ul>
                 </div>
             </div>
         {% else %}

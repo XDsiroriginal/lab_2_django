@@ -1,18 +1,36 @@
-from gc import get_objects
+from itertools import count
 
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
-from .models import ImageContent, Profile, application
+from .models import ImageContent, Profile, application, Category
 from .forms import RegisterForm, LoginChangeForm, FirstNameChangeForm, LastNameChangeForm, EmailChangeForm, \
-    PatronymicChangeForm, ApplicationForm
+    PatronymicChangeForm, ApplicationForm, ApplicationChangeForm, CreateNewCategory
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
+    all_applications = application.objects.all().filter(status='c')
+    application_on_work = application.objects.all().filter(status='w').count()
+    application_per_page = 3
+    paginator = Paginator(all_applications, application_per_page)
+    page_number = request.GET.get('page')
+
+    try:
+        application_on_page = paginator.page(page_number)
+    except PageNotAnInteger:
+        application_on_page = paginator.page(1)
+    except EmptyPage:
+        application_on_page = paginator.page(paginator.num_pages)
+
     return render(
         request,
         'app/index.html',
+        {
+            'application_on_page': application_on_page,
+            'paginator': paginator,
+            'application_on_work' : application_on_work,
+        }
     )
 
 
@@ -26,6 +44,7 @@ def to_logout(request):
 class ImageDetailView(generic.DetailView):
     model = ImageContent
 
+
 class ApplicationDetailView(generic.DetailView):
     model = application
 
@@ -36,21 +55,34 @@ class ImageListView(generic.ListView):
     paginate_by = 9
 
 
-def to_profile(request):
+def to_profile(request, status=None):
     user = request.user
 
     if user.is_authenticated:
+        if user.has_perm('app.worker'):
+            if status:
+                all_applications = application.objects.all().filter(status=status).order_by('-date')
+            else:
+                all_applications= application.objects.all()
+        else:
+            if status:
+                all_applications = user.application_set.filter(status=status).order_by('-date')
+            else:
+                all_applications= user.application_set.order_by('-date').all()
+
+
         profile = user.profile
-        all_applications = user.application_set.order_by('-date').all()
         application_per_page = 3
         paginator = Paginator(all_applications, application_per_page)
         page_number = request.GET.get('page')
+
         try:
             application_on_page = paginator.page(page_number)
         except PageNotAnInteger:
             application_on_page = paginator.page(1)
         except EmptyPage:
             application_on_page = paginator.page(paginator.num_pages)
+
         return render(
             request,
             'app/profile.html',
@@ -60,12 +92,12 @@ def to_profile(request):
                 'paginator': paginator,
             }
         )
-
     else:
         return render(
             request,
             'app/profile.html',
         )
+
 
 
 def change_user_avatar(request, pk):
@@ -217,23 +249,63 @@ def create_new_application(request):
         return redirect('login')
 
     if request.method == 'POST':
+        form = CreateNewCategory(request.POST)
+        if form.is_valid():
+            new_category = form.save(commit=False)
+            new_category.save()
+            return redirect('admin_profile')
+    else:
+        form = CreateNewCategory()
+
+    return render(request, 'app/create_new_category.html', {'form': form})
+
+
+def create_new_category(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             new_application = form.save(commit=False)
             new_application.username = request.user
             new_application.save()
             return redirect('profile')
-        else:
-            print("Form errors:", form.errors)
     else:
         form = ApplicationForm()
 
     return render(request, 'app/create_new_application.html', {'form': form})
 
+
 def application_delete(request, pk):
-    this_application = get_object_or_404(application,  pk=pk)
+    this_application = get_object_or_404(application, pk=pk)
     if request.method == 'POST':
         this_application.delete()
         return redirect('profile')
     else:
         return redirect('index')
+
+
+def application_change(request, pk):
+    this_application = get_object_or_404(application, pk=pk)
+
+    if request.method == 'POST':
+        form = ApplicationChangeForm(request.POST, request.FILES, instance=this_application)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        else:
+            return render(request, 'app/application_change.html', {'form': form, 'application': this_application})
+    else:
+        form = ApplicationChangeForm(instance=this_application)
+        return render(request, 'app/application_change.html', {'form': form, 'application': this_application})
+
+def categories_change_view(request):
+    categories = Category.objects.all()
+    user = request.user
+    profile = user.profile
+    return render(request, 'app/category_to-cange.html', {'profile' : profile, 'categories': categories})
+
+def application_delete_comfirm(request, pk):
+    this_application = get_object_or_404(application, pk=pk)
+    return render(request, 'app/application_delete_comfirm.html', {'application': this_application})

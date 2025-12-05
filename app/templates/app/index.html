@@ -5,7 +5,39 @@
     <div class="authentication_content">
         <a href="{% url 'profile' %}"><h3>Профиль</h3></a>
     </div>
+    <h1 style="margin-left: 5vw">Заявки</h1>
     <div class="main_content">
-        <h1>Заявки</h1>
+        {% if application_on_page %}
+            {% for applications in application_on_page %}
+                <div class="application">
+                    <div class="application_title_content"><h3>{{ applications.title }}</h3>
+                        <p>({{ applications.date }})</p></div>
+                    <div class="application_image_content"><img src="{{ applications.image.url }}"
+                                                                alt="{{ applications.title }} image">
+                    </div>
+                    <div class="application_info">
+                        <p>Статус - {{ applications.get_status_display }}</p>
+                        <p>Категория - {{ applications.categories.category_full_name }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>На сайте нет заявок</p>
+        {% endif %}
+
     </div>
+
+    <div class="pagination" style="margin-left: 5vw">
+        <div class="paginator_content">
+            {% if application_on_page.has_previous %}
+                <a href="?page={{ application_on_page.previous_page_number }}">предыдущая</a>
+            {% endif %}
+            <a href="?page=1">Страница {{ application_on_page.number }} из {{ paginator.num_pages }}</a>
+            {% if application_on_page.has_next %}
+                <a href="?page={{ application_on_page.next_page_number }}">следующая</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <p style="margin-left: 5vw">Сейчвс в работе находится: {{ application_on_work }} работа</p>
 {% endblock %}

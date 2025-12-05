@@ -1,10 +1,13 @@
 from random import choices
+from unicodedata import category
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.template.defaulttags import comment
+
 from .validators import validate_cyrillic_and_spaces, validate_image
-from .models import application
+from .models import application, Category
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True, label='Электронная почта')
@@ -58,4 +61,32 @@ class ApplicationForm(forms.ModelForm):
         }
         widgets = {
             'description': forms.Textarea(),
+        }
+
+class ApplicationChangeForm(forms.ModelForm):
+    class Meta:
+        model = application
+        fields = ('status', 'categories', 'comment', 'image')
+        labels = {
+            'status': 'Изменить статус заявки',
+            'categories': 'Изменит категорию',
+            'comment': 'Коментарий',
+            'image': 'новое изображение'
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.status != 'n':
+            self.fields['status'].disabled = True
+        if self.instance and self.instance.status == 'n':
+            self.fields['image'].required=True
+        if self.instance and self.instance.status == 'n':
+            self.fields['comment'].required=True
+
+class CreateNewCategory(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ('category_full_name', 'category_char')
+        labels = {
+            'category_full_name': 'Полное название категории',
+            'category_char': 'короткое название категории',
         }

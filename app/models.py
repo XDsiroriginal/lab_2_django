@@ -56,6 +56,8 @@ class application(models.Model):
     image = models.ImageField(upload_to='images/', blank=False, null=False)
     username = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    comment = models.TextField(blank=True, null=True)
+
     def get_absolute_url(self):
         return reverse('application-detail', args=[str(self.id)])
 
