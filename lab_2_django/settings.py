@@ -126,3 +126,5 @@ LOGIN_URL =  'login'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'app/static/app/media'
+
+AUTH_PASSWORD_VALIDATORS = []
