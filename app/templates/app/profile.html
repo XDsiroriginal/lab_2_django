@@ -82,7 +82,7 @@
                                     </div>
                                     <div class="application_info">
                                         <p>Статус - {{ applications.get_status_display }}</p>
-                                        <p>Категория - {{ applications.categories.category_full_name}}</p>
+                                        <p>Категория - {{ applications.categories.category_full_name }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -103,8 +103,17 @@
                     </div>
                 </div>
             {% else %}
+
                 <div class="top_bar">
                     <h2>Мои заявки ({{ user.get_username }})</h2>
+                    <div class="filter_content">
+                        <p>Фильтрация по статусу</p>
+                        <a href="{% url 'profile' %}">Все заявки</a>
+                        <a href="{% url 'profile_filtered' status='n' %}">Новая заявка</a>
+                        <a href="{% url 'profile_filtered' status='w' %}">Принята в работу</a>
+                        <a href="{% url 'profile_filtered' status='c' %}">Выполнена</a>
+                        <a href="{% url 'profile_filtered' status='r' %}">Отклонена</a>
+                    </div>
                 </div>
                 <div class="application_list">
 
@@ -113,11 +122,11 @@
                             <a href="{{ applications.get_absolute_url }}">
                                 <div class="application"
                                         {% if applications.status == 'n' %}
-                                            style = 'color: red'
+                                     style='color: red'
                                         {% else %}
-                                            style = 'color: green'
+                                     style='color: green'
                                         {% endif %}
-                                        >
+                                >
                                     <div class="application_title_content"><h3>{{ applications.title }}</h3>
                                         <p>({{ applications.date }})</p></div>
                                     <div class="application_image_content"><img src="{{ applications.image.url }}"

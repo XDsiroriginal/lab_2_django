@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from .models import ImageContent, Profile, application, Category
 from .forms import RegisterForm, LoginChangeForm, FirstNameChangeForm, LastNameChangeForm, EmailChangeForm, \
-    PatronymicChangeForm, ApplicationForm, ApplicationChangeForm, CreateNewCategory
+    PatronymicChangeForm, ApplicationForm, ApplicationChangeForm, CreateNewCategory, CategoryChangeForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -267,10 +267,10 @@ def create_new_category(request):
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
-            new_application = form.save(commit=False)
+            new_application = form.save()
             new_application.username = request.user
             new_application.save()
-            return redirect('profile')
+            return redirect('categories_change')
     else:
         form = ApplicationForm()
 
@@ -309,3 +309,30 @@ def categories_change_view(request):
 def application_delete_comfirm(request, pk):
     this_application = get_object_or_404(application, pk=pk)
     return render(request, 'app/application_delete_comfirm.html', {'application': this_application})
+
+def categories_delete_change(request, pk):
+    categories = Category.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = CategoryChangeForm(request.POST)
+        if form.is_valid():
+            new_full_name = form.cleaned_data['category_full_name']
+            new_category_char = form.cleaned_data['category_char']
+            categories.category_full_name = new_full_name
+            categories.category_char = new_category_char
+            categories.save()
+            return redirect('profile')
+    else:
+        form = CategoryChangeForm(initial={'categories': categories})
+    return render(request, 'app/categories_delete_change.html', {'categories': categories, 'form': form})
+
+def categories_delete_confirm(request, pk):
+    categories = Category.objects.get(pk=pk)
+    return render(request, 'app/categories_delete_confirm.html', {'categories': categories})
+
+def category_delete(request, pk):
+    this_category = Category.objects.get(pk=pk)
+    if request.method == 'POST':
+        this_category.delete()
+        return redirect('categories_change')
+    else:
+        return redirect('index')

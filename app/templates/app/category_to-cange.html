@@ -22,6 +22,7 @@
             <div class="profile_content">
                 <div class="top_bar">
                     <h3>Настройки категорий</h3>
+                    <a href="{% url 'profile' %}">В профиль</a>
                 </div>
                 <div class="main_bar-admin">
                     <ul>
@@ -29,7 +30,7 @@
                         <p>Существующие категории:</p>
                         <ul> 
                             {% for category in categories %}
-                            	<li><a href="">{{ category.category_full_name }}</a></li>
+                            	<li><a href="{% url 'categories_delete_change' pk=category.pk %}">{{ category.category_full_name }}</a></li>
                             {% endfor %}
 
                         </ul>

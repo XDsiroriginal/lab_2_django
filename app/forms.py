@@ -90,3 +90,12 @@ class CreateNewCategory(forms.ModelForm):
             'category_full_name': 'Полное название категории',
             'category_char': 'короткое название категории',
         }
+
+class CategoryChangeForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ('category_full_name', 'category_char')
+        labels = {
+            'category_full_name': 'Полное название категории',
+            'category_char': 'короткое название категории',
+        }

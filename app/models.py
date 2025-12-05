@@ -34,7 +34,7 @@ class Profile(models.Model):
 
 class Category(models.Model):
     category_full_name = models.CharField(max_length=100)
-    category_char = models.CharField(max_length=1, blank=False)
+    category_char = models.CharField(max_length=1, blank=False, unique=True)
 
     def __str__(self):
         return self.category_full_name

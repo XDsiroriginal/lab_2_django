@@ -37,4 +37,7 @@ urlpatterns = [
 
     path('profile/admin/categories/', views.categories_change_view, name='categories_change'),
     path('profile/admin/categories/create_new_category', views.create_new_application, name='create_new_application'),
+    path('app/profile/admin/categories/change/<int:pk>/', views.categories_delete_change, name='categories_delete_change'),
+    path('app/profile/admin/categories/change/<int:pk>/delete_comfirm/', views.categories_delete_confirm, name='categories_delete_confirm'),
+    path('app/profile/admin/categories/change/<int:pk>/delete/', views.category_delete, name='category_delete'),
 ]
