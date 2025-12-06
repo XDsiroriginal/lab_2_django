@@ -1,57 +1,50 @@
-{% extends "base.html" %}
-{% block title %}Работа с категориями{% endblock %}
+{% extends 'base.html' %}
 {% load static %}
+{% block title %}Регистрация{% endblock %}
 {% block content %}
-    {% if user.is_authenticated %}
-        {% if perms.app.worker %}
-            <div class="profile_content">
-                <div class="top_bar">
-                    <h2>Панель работника {{ user.get_username }}</h2>
-                    <a href="{% url 'to_logout' %}">выйти из аккаунта</a>
-                </div>
-                <div class="main_bar">
-                    <div class="user_avatar_and_name">
-                        <div class="user_avatar">
-                            <a href="{% url 'image-list' %}"><img src="{% static 'app/img/' %}{{ profile.avatarlink }}"
-                                                                  alt="{{ user.get_username }} avatar"></a>
-                        </div>
-                        <h3>{{ user.get_username }}</h3>
+    <div class="main_container form-page-container">
+
+        <div class="card form-card auth-card register-card">
+            <h2 class="form-title">Регистрация нового аккаунта</h2>
+
+            {% if user.is_authenticated %}
+                <div class="auth-message-block">
+                    <p class="auth-text-info">Вы уже выполнили регистрацию и вход.</p>
+                    <div class="guest-auth-actions">
+                        <a href="{% url 'to_logout' %}" class="btn-profile btn-logout">
+                             Выполнить выход
+                        </a>
+                        <a href="{% url 'index' %}" class="btn-profile">
+                            ← На главную
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="profile_content">
-                <div class="top_bar">
-                    <h3>Настройки категорий</h3>
-                    <a href="{% url 'profile' %}">В профиль</a>
-                </div>
-                <div class="main_bar-admin">
-                    <ul>
-                        <li><a href="{% url 'create_new_category' %}">Создать новую категорию</a></li>
-                        <p>Существующие категории:</p>
-                        <ul> 
-                            {% for category in categories %}
-                            	<li><a href="{% url 'categories_delete_change' pk=category.pk %}">{{ category.category_full_name }}</a></li>
-                            {% endfor %}
+            {% else %}
+                <div class="form-grid-content">
 
-                        </ul>
-                    </ul>
+                    <div class="form-image-block">
+                        <img src="{% static 'app/img/django.png' %}"
+                             alt="Иллюстрация регистрации"
+                             class="form-image-img">
+                    </div>
+
+                    <div class="form-content-wrapper">
+                        <form method="post" class="form-django-default">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="hidden" name="next" value="{{ next }}">
+                            <button type="submit" class="btn-submit btn-register">Зарегистрироваться</button>
+                        </form>
+
+                        <div class="form-footer-actions">
+                            <a href="{% url 'login' %}" class="form-back-link">
+                                Есть аккаунт? Войти в аккаунт
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        {% else %}
-            <div class="content">
-            <div class="image_detail_block">
-                <h3>У вас нет доступа к данной странице</h3>
-                <a href="{% url 'profile' %}"><h3>вернуться в профиль</h3></a>
-            </div>
+            {% endif %}
+
         </div>
-        {% endif %}
-    {% else %}
-        <div class="content">
-            <a class="to_back" href="{% url 'index' %}"><p>Вернуться назад</p></a>
-            <div class="image_detail_block">
-                <h3>Вы не вошли в аккаунт</h3>
-                <a href="{% url 'login' %}"><h3>войти</h3></a>
-            </div>
-        </div>
-    {% endif %}
+    </div>
 {% endblock %}

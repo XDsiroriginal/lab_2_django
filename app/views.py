@@ -1,5 +1,3 @@
-from itertools import count
-
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
@@ -290,30 +288,14 @@ def application_change(request, pk):
     if request.method == 'POST':
         form = ApplicationChangeForm(request.POST, request.FILES, instance=this_application)
         if form.is_valid():
-            this_status = form.cleaned_data['status']
-            this_comment = form.cleaned_data['comment']
-            this_image = form.cleaned_data['image']
-
-            if this_status == 'w' and this_comment:
-                form.save()
-                return redirect('profile')
-            else:
-                error = 'у вас нет комента'
-                return render(request, 'app/application_change.html', {'form': form, 'application': this_application, 'error': error})
-
-            if this_status == 'c' and this_image:
-                form.save()
-                return redirect('profile')
-            else:
-                error = 'у вас нет изображения'
-                return render(request, 'app/application_change.html', {'form': form, 'application': this_application, 'error': error})
-
+            form.save()
+            return redirect('profile')
         else:
             return render(request, 'app/application_change.html', {'form': form, 'application': this_application})
+
     else:
         form = ApplicationChangeForm(instance=this_application)
         return render(request, 'app/application_change.html', {'form': form, 'application': this_application})
-
 
 
 def categories_change_view(request):

@@ -2,23 +2,40 @@
 {% load static %}
 {% block title %}Изменение категории{% endblock %}
 {% block content %}
-    <div class="content">
-        <div class="user_authentication_block">
-            <h2>Смена категории {{ categories.category_full_name }}</h2>
-            <div class="image_content">
-                <img src="{% static 'app/img/django.png' %}" alt="крутой джанга">
+    <div class="main_container form-page-container">
+        {% if user.is_authenticated and perms.app.worker %}
+            <div class="card form-card category-form-card">
+                <h2 class="form-title">Изменение категории: "{{ categories.category_full_name }}"</h2>
+
+                <div class="form-content-wrapper">
+                    <form method="post" class="form-django-default">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <div class="form-actions-group">
+                            <input type="hidden" name="next" value="{{ next }}">
+                            <button type="submit" class="btn-submit btn-category-update">Сменить категорию</button>
+                            <a href="{% url 'categories_delete_confirm' pk=categories.pk %}" class="btn-action btn-delete-app">
+                                Удалить категорию
+                            </a>
+                        </div>
+                    </form>
+
+                    <div class="form-footer-actions">
+                        <a href="{{ request.META.HTTP_REFERER }}" class="form-back-link">
+                            ← Вернуться
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="login_form_content">
-                <p>{{ user.first_name }}</p>
-                <form method="post" class="login_form">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="hidden" name="next" value="{{ next }}">
-                    <input type="submit" value="Сменить категорию">
-                    <a href="{% url 'categories_delete_confirm' pk=categories.pk %}" style="color: red">Удалить категорию</a>
-                </form>
-                <a href="{{ request.META.HTTP_REFERER }}">назад</a>
+        {% else %}
+            <div class="card guest-card admin-denied-card">
+                 <h3 class="guest-title form-title-danger">🚫 Доступ запрещен</h3>
+                 <p class="guest-text">У вас нет прав для изменения категории.</p>
+                 <div class="guest-auth-actions">
+                     <a href="{% url 'profile' %}" class="btn-guest-login">Вернуться в свой профиль</a>
+                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
-{% endblock %} 
+{% endblock %}

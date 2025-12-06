@@ -2,29 +2,49 @@
 {% load static %}
 {% block title %}Регистрация{% endblock %}
 {% block content %}
-    <div class="content">
-        <div class="user_authentication_block">
-            <h2>Регистрация</h2>
-            <div class="image_content">
-                <img src="{% static 'app/img/django.png' %}" alt="крутой джанга">
-            </div>
+    <div class="main_container form-page-container">
+
+        <div class="card form-card auth-card register-card">
+            <h2 class="form-title">Регистрация нового аккаунта</h2>
+
             {% if user.is_authenticated %}
-                <div>
-                    <p>Вы уже выполнили регистрацию и вход. </p>
-                    <a href="{% url 'to_logout' %}">Выполнить выход</a>
-                    <a href="{% url 'index' %}"><p>Перейти на главную страницу</p></a>
+                <div class="auth-message-block">
+                    <p class="auth-text-info">Вы уже выполнили регистрацию и вход.</p>
+                    <div class="guest-auth-actions">
+                        <a href="{% url 'to_logout' %}" class="btn-profile btn-logout">
+                            🚪 Выполнить выход
+                        </a>
+                        <a href="{% url 'index' %}" class="btn-profile">
+                            ← На главную
+                        </a>
+                    </div>
                 </div>
             {% else %}
-                <div class="login_form_content">
-                    <form method="post" class="login_form">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="hidden" name="next" value="{{ next }}">
-                        <input type="submit" value="Зарегестрироваться">
-                    </form>
-                    <a href="{% url 'login' %}">есть аккаунт? войти в аккаунт</a>
+                <div class="form-grid-content">
+
+                    <div class="form-image-block">
+                        <img src="{% static 'app/img/django.png' %}"
+                             alt="Иллюстрация регистрации"
+                             class="form-image-img">
+                    </div>
+
+                    <div class="form-content-wrapper">
+                        <form method="post" class="form-django-default">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="hidden" name="next" value="{{ next }}">
+                            <button type="submit" class="btn-submit btn-register">Зарегистрироваться</button>
+                        </form>
+
+                        <div class="form-footer-actions">
+                            <a href="{% url 'login' %}" class="form-back-link">
+                                Есть аккаунт? Войти в аккаунт
+                            </a>
+                        </div>
+                    </div>
                 </div>
             {% endif %}
+
         </div>
     </div>
-{% endblock %} 
+{% endblock %}

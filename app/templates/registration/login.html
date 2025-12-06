@@ -1,30 +1,50 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Вход{% endblock %}
+{% block title %}Вход в аккаунт{% endblock %}
 {% block content %}
-    <div class="content">
-        <div class="user_authentication_block">
-            <h2>Вход</h2>
-            <div class="image_content">
-                <img src="{% static 'app/img/django.png' %}" alt="крутой джанга">
+    <div class="main_container form-page-container">
+        <div class="card form-card login-card">
+            <h2 class="form-title">Вход в систему</h2>
+
+            <div class="form-image-block">
+                <img src="{% static 'app/img/django.png' %}"
+                     alt="Логотип Django"
+                     class="form-image-img">
             </div>
-            {% if user.is_authenticated %}
-                <div>
-                    <p>Вы уже выполнили вход. </p>
-                    <a href="{% url 'to_logout' %}">Выполнить выход</a>
-                    <a href="{% url 'index' %}"><p>Перейти на главную страницу</p></a>
-                </div>
-            {% else %}
-                <div class="login_form_content">
-                    <form method="post" class="login_form">
+
+            <div class="form-content-wrapper">
+
+                {% if user.is_authenticated %}
+                    <div class="auth-already-logged">
+                        <p class="auth-message-text">
+                            Вы уже выполнили вход как <strong>{{ user.get_username }}</strong>.
+                        </p>
+
+                        <div class="auth-actions-group">
+                            <a href="{% url 'to_logout' %}" class="btn-submit btn-auth-action btn-guest-logout">
+                                🚪 Выполнить выход
+                            </a>
+                            <a href="{% url 'index' %}" class="btn-profile btn-auth-action btn-back-to-home">
+                                ← На главную
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <form method="post" class="form-django-default">
                         {% csrf_token %}
                         {{ form.as_p }}
+
                         <input type="hidden" name="next" value="{{ next }}">
-                        <input type="submit" value="Войти">
+                        <button type="submit" class="btn-submit">Войти</button>
                     </form>
-                    <a href="{% url 'register' %}">нет аккаунта? зарегестрироваться</a>
-                </div>
-            {% endif %}
+
+                    <div class="form-footer-actions">
+                        <a href="{% url 'register' %}" class="auth-switch-link">
+                            Нет аккаунта? Зарегистрироваться
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
-{% endblock %} 
+{% endblock %}

@@ -1,48 +1,81 @@
 {% extends "base.html" %}
-{% block title %}Профиль Администратора{% endblock %}
+{% block title %}Панель Работника/Администратора{% endblock %}
 {% load static %}
 {% block content %}
-    {% if user.is_authenticated %}
-        {% if perms.app.worker %}
-            <div class="profile_content">
-                <div class="top_bar">
-                    <h2>Панель работника {{ user.get_username }}</h2>
-                    <a href="{% url 'to_logout' %}">выйти из аккаунта</a>
-                </div>
-                <div class="main_bar">
-                    <div class="user_avatar_and_name">
-                        <div class="user_avatar">
-                            <a href="{% url 'image-list' %}"><img src="{% static 'app/img/' %}{{ profile.avatarlink }}"
-                                                                  alt="{{ user.get_username }} avatar"></a>
+    <div class="main_container profile-main-container">
+
+        {% if user.is_authenticated %}
+            {% if perms.app.worker %}
+
+                <div class="card profile-header-card admin-header-card">
+                    <div class="profile-info-group">
+                        <div class="profile-avatar-wrapper">
+                            <a href="{% url 'image-list' %}" class="profile-avatar-link">
+                                <img src="{% static 'app/img/' %}{{ profile.avatarlink }}"
+                                     alt="{{ user.get_username }} avatar"
+                                     class="profile-avatar-img">
+                            </a>
                         </div>
-                        <h3>{{ user.get_username }}</h3>
+                        <div class="profile-text-info">
+                            <h2 class="profile-username-title">Панель Работника, {{ user.get_username }}</h2>
+                            <p class="profile-role-text status-text-c">
+                                 Администратор / Работник
+                            </p>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <a href="{% url 'profile' %}" class="btn-profile">
+                            ← В профиль
+                        </a>
+                        <a href="{% url 'to_logout' %}" class="btn-profile btn-logout">
+                            Выйти
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="profile_content">
-                <div class="top_bar">
-                    <h2>Настройки администратора</h2>
-                    <a href="{% url 'profile' %}">В профиль</a>
+
+                <div class="card admin-control-card">
+                    <h3 class="admin-panel-title">Управление системой</h3>
+                    <div class="admin-actions-grid">
+
+                        <a href="{% url 'categories_change' %}" class="admin-action-link">
+                            <span class="action-icon"></span>
+                            <span class="action-text">Работа с категориями</span>
+                            <span class="action-description">Добавление, удаление и изменение категорий заявок.</span>
+                        </a>
+
+                        <a href="{% url 'index' %}" class="admin-action-link">
+                            <span class="action-icon"></span>
+                            <span class="action-text">Просмотр всех заявок</span>
+                            <span class="action-description">Быстрый доступ к общему списку всех заявок.</span>
+                        </a>
+
+                        </div>
                 </div>
-                <div class="main_bar-admin">
-                    <a href="{% url 'categories_change' %}">Работа с категориями</a>
+
+            {% else %}
+                <div class="card guest-card admin-denied-card">
+                    <h3 class="guest-title form-title-danger"> Доступ запрещен</h3>
+                    <p class="guest-text">
+                        У вас нет прав для просмотра этой страницы.
+                    </p>
+                    <div class="guest-auth-actions">
+                        <a href="{% url 'profile' %}" class="btn-guest-login">
+                            Вернуться в свой профиль
+                        </a>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
+
         {% else %}
-            <div class="content">
-            <div class="image_detail_block">
-                <h3>У вас нет доступа к данной странице</h3>
-                <a href="{% url 'profile' %}"><h3>вернуться в профиль</h3></a>
+            <div class="card guest-card logout-card">
+                <h3 class="guest-title guest-title-warning">Требуется вход</h3>
+                <p class="guest-text">Для просмотра этой страницы необходимо войти на сайт.</p>
+
+                <div class="guest-auth-actions">
+                    <a href="{% url 'login' %}" class="btn-guest-login">Войти в аккаунт</a>
+                    <a href="{% url 'index' %}" class="btn-profile btn-back-to-home">На главную</a>
+                </div>
             </div>
-        </div>
         {% endif %}
-    {% else %}
-        <div class="content">
-            <a class="to_back" href="{% url 'index' %}"><p>Вернуться назад</p></a>
-            <div class="image_detail_block">
-                <h3>Вы не вошли в аккаунт</h3>
-                <a href="{% url 'login' %}"><h3>войти</h3></a>
-            </div>
-        </div>
-    {% endif %}
+    </div>
 {% endblock %}

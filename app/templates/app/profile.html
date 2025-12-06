@@ -1,179 +1,161 @@
 {% extends "base.html" %}
-{% block title %}Профиль {% endblock %}
+{% block title %}Профиль пользователя{% endblock %}
 {% load static %}
+
 {% block content %}
+<div class="main_container profile-main-container">
+
     {% if user.is_authenticated %}
-        <div class="profile_content">
-            <div class="top_bar">
-                <h2>Добро пожаловать {{ user.get_username }}</h2>
-            </div>
-            <div class="navigations_content">
-                <a href="{% url 'index' %}" style="font-size: 150%">На главную страницу</a>
-            </div>
-            <div class="main_bar">
-                <div class="user_avatar_and_name">
-                    <div class="user_avatar">
-                        <a href="{% url 'image-list' %}"><img src="{% static 'app/img/' %}{{ profile.avatarlink }}"
-                                                              alt="{{ user.get_username }} avatar"></a>
-                    </div>
-                    <h3>{{ user.get_username }}</h3>
-                    {% if perms.app.worker %}
-                        <a href="{% url 'admin_profile' %}">Войти в панель работника</a>
+        <div class="card profile-header-card">
+            <div class="profile-avatar-wrapper">
+                <a href="{% url 'image-list' %}" class="profile-avatar-link">
+                    {% if profile.avatarlink %}
+                        <img src="{% static 'app/img/' %}{{ profile.avatarlink }}"
+                             alt="Avatar"
+                             class="profile-avatar-img">
+                    {% else %}
+                        <img src="{% static 'app/img/default.png' %}" alt="No Avatar" class="profile-avatar-img profile-default-avatar-img">
                     {% endif %}
-                </div>
-                <div class="user_information">
-                    <a href="{% url 'login_change' %}"><p>{{ user.get_username }}</p></a>
-                    <a href="{% url 'password_change' %}"><p>Сменить пароль</p></a>
-                    <div>
-                        {% if user.first_name %}
-                            <a href="{% url 'first_name_change' %}"><p>{{ user.first_name }}</p></a>
-                        {% else %}
-                            <a href="{% url 'first_name_change' %}"><p>У вас не указано имя.</p></a>
-                        {% endif %}
+                </a>
+            </div>
 
-                        {% if user.last_name %}
-                            <a href="{% url 'last_name_change' %}"><p>{{ user.last_name }}</p></a>
-                        {% else %}
-                            <a href="{% url 'last_name_change' %}"><p>У вас не указана фамилия.</p></a>
-                        {% endif %}
+            <div class="profile-info-block">
+                <h2 class="profile-username-title">{{ user.get_username }}</h2>
+                <p class="profile-welcome-text">
+                    Добро пожаловать в личный кабинет
+                </p>
+                {% if perms.app.worker %}
+                    <a href="{% url 'admin_profile' %}" class="profile-worker-link">
+                        ️ Войти в панель работника
+                    </a>
+                {% endif %}
+            </div>
 
-                        {% if profile.patronymic %}
-                            <a href="{% url 'patronymic_change' %}"><p>{{ profile.patronymic }}</p></a>
-                        {% else %}
-                            <a href="{% url 'patronymic_change' %}"><p>У вас не указано отчество.</p></a>
-                        {% endif %}
-                    </div>
-                    <a href="{% url 'email_change' %}"><p>{{ user.email }}</p></a>
-                    <p>
-                        {% if perms.app.worker %}
-                            Вы - работник
-                        {% else %}
-                            Вы - зарегестрированный пользователь
-                        {% endif %}
-                    </p>
-                    <a href="{% url 'to_logout' %}" style="color: red">выйти из аккаунта</a>
+            <div class="profile-actions">
+                <a href="{% url 'index' %}" class="btn-profile"> На главную</a>
+                <a href="{% url 'to_logout' %}" class="btn-profile btn-logout"> Выйти</a>
+            </div>
+        </div>
+
+        <div class="control-panel">
+
+            <div class="control-panel-left">
+                {% if perms.app.user and not perms.app.worker %}
+                    <h2 class="app-list-title">Мои заявки</h2>
+                    <a href="{% url 'create_new_application' %}"
+                       class="btn-create-app">
+                       + Создать новую заявку
+                    </a>
+                {% else %}
+                    <h2>Заявки пользователей (Панель работника)</h2>
+                {% endif %}
+            </div>
+
+            <div class="filter-wrapper">
+                <p class="filter-title">Фильтрация по статусу:</p>
+                <div class="filter-links-group">
+                    <a href="{% url 'profile' %}" class="btn-profile btn-filter-app">Все</a>
+                    <a href="{% url 'profile_filtered' status='n' %}" class="btn-profile btn-filter-app">Новые</a>
+                    <a href="{% url 'profile_filtered' status='w' %}" class="btn-profile btn-filter-app">В работе</a>
+                    <a href="{% url 'profile_filtered' status='c' %}" class="btn-profile btn-filter-app">Готовые</a>
+                    <a href="{% url 'profile_filtered' status='r' %}" class="btn-profile btn-filter-app">Отклоненные</a>
                 </div>
             </div>
         </div>
 
-        <div class="profile_content">
-            {% if perms.app.user and perms.app.worker == False %}
-                <div class="top_bar">
-                    <h2>Мои заявки ({{ user.get_username }})</h2>
-                </div>
+        <div class="cards_grid">
+            {% if application_on_page %}
+                {% for app in application_on_page %}
+                    <a href="{{ app.get_absolute_url }}" style="text-decoration: none; color: inherit;">
+                        <div class="card
+                            {% if perms.app.worker %}
+                                app-card-worker
+                                {% if app.status == 'n' %} app-card-status-new {% endif %}
+                            {% endif %}"
+                            >
 
-                <a href="{% url 'create_new_application' %}" style="font-size: 150%">Создать новую заявку</a>
+                            <div class="card_image_wrapper">
+                                {% if app.image %}
+                                    <img src="{{ app.image.url }}" alt="{{ app.title }}">
+                                {% else %}
+                                    <div class="app-card-no-photo">Нет фото</div>
+                                {% endif %}
+                                <span class="card_category_badge">{{ app.categories.category_full_name }}</span>
+                            </div>
 
-                <div class="filter_content">
-                    <p>Фильтрация по статусу</p>
-                    <a href="{% url 'profile' %}">Все заявки</a>
-                    <div>
-                        <a href="{% url 'profile_filtered' status='n' %}">Новая заявка</a>
-                        <a href="{% url 'profile_filtered' status='w' %}">Принята в работу</a>
-                        <a href="{% url 'profile_filtered' status='c' %}">Выполнена</a>
-                        <a href="{% url 'profile_filtered' status='r' %}">Отклонена</a>
-                    </div>
-                </div>
+                            <div class="card_content">
+                                <div class="card_header">
+                                    <h3 class="card_title">{{ app.title }}</h3>
+                                    <span class="card_date">{{ app.date }}</span>
+                                    {% if perms.app.worker %}
+                                        <p class="app-card-author-name">
+                                            Автор: <strong>{{ app.user.username }}</strong>
+                                        </p>
+                                    {% endif %}
+                                </div>
 
-                <div class="application_list">
-                    {% if application_on_page %}
-                        {% for applications in application_on_page %}
-                            <a href="{{ applications.get_absolute_url }}">
-                                <div class="application">
-                                    <div class="application_title_content"><h3>{{ applications.title }}</h3>
-                                        <p>({{ applications.date }})</p></div>
-                                    <div class="application_image_content"><img src="{{ applications.image.url }}"
-                                                                                alt="{{ applications.title }} image">
-                                    </div>
-                                    <div class="application_info">
-                                        <p>Статус - {{ applications.get_status_display }}</p>
-                                        <p>Категория - {{ applications.categories.category_full_name }}</p>
+                                <div class="card_footer">
+                                    <div class="status_indicator">
+                                        <span class="status_label">Статус:</span>
+                                        <span class="status_value status-value-text status-text-{{ app.status }}">
+                                            {{ app.get_status_display }}
+                                        </span>
                                     </div>
                                 </div>
-                            </a>
-                        {% endfor %}
-                    {% else %}
-                        <p>У вас нет заявок</p>
-                    {% endif %}
-                </div>
-                <div class="pagination">
-                    <div class="paginator_content">
-                        {% if application_on_page.has_previous %}
-                            <a href="?page={{ application_on_page.previous_page_number }}">предыдущая</a>
-                        {% endif %}
-                        <a href="?page=1">Страница {{ application_on_page.number }} из {{ paginator.num_pages }}</a>
-                        {% if application_on_page.has_next %}
-                            <a href="?page={{ application_on_page.next_page_number }}">следующая</a>
-                        {% endif %}
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
             {% else %}
-
-                <div class="top_bar">
-                    <h2>Заявки пользователей ({{ user.get_username }})</h2>
-                </div>
-                <div class="filter_content">
-                    <p>Фильтрация по статусу</p>
-                    <a href="{% url 'profile' %}">Все заявки</a>
-                    <div>
-                        <a href="{% url 'profile_filtered' status='n' %}">Новая заявка</a>
-                        <a href="{% url 'profile_filtered' status='w' %}">Принята в работу</a>
-                        <a href="{% url 'profile_filtered' status='c' %}">Выполнена</a>
-                        <a href="{% url 'profile_filtered' status='r' %}">Отклонена</a>
-                    </div>
-                </div>
-                <div class="application_list">
-
-                    {% if application_on_page %}
-                        {% for applications in application_on_page %}
-                            <a href="{{ applications.get_absolute_url }}">
-                                <div class="application"
-                                        {% if applications.status == 'n' %}
-                                     style='color: red'
-                                        {% else %}
-                                     style='color: green'
-                                        {% endif %}
-                                >
-                                    <div class="application_title_content"><h3>{{ applications.title }}</h3>
-                                        <p>({{ applications.date }})</p></div>
-                                    <div class="application_image_content"><img src="{{ applications.image.url }}"
-                                                                                alt="{{ applications.title }} image">
-                                    </div>
-                                    <div class="application_info">
-                                        <p>Статус - {{ applications.get_status_display }}</p>
-                                        <p>Категория - {{ applications.categories.category_full_name }}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        {% endfor %}
-                    {% else %}
-                        <p>Заявок нет</p>
-                    {% endif %}
-                </div>
-                <div class="pagination">
-                    <div class="paginator_content">
-                        {% if application_on_page.has_previous %}
-                            <a href="?page={{ application_on_page.previous_page_number }}" class="pagination_a">предыдущая</a>
-                        {% endif %}
-                        <a href="?page=1" class="pagination_a">Страница {{ application_on_page.number }}
-                            из {{ paginator.num_pages }}</a>
-                        {% if application_on_page.has_next %}
-                            <a href="?page={{ application_on_page.next_page_number }}"
-                               class="pagination_a">следующая</a>
-                        {% endif %}
-                    </div>
+                <div class="empty_state empty-state-full-width">
+                    <p>Заявок не найдено.</p>
                 </div>
             {% endif %}
         </div>
 
+        {% if application_on_page.has_other_pages %}
+        <div class="stats_bar pagination-bar">
+            <div class="pagination-content">
+                {% if application_on_page.has_previous %}
+                    <a href="?page={{ application_on_page.previous_page_number }}" class="pagination-link">← Назад</a>
+                {% endif %}
+
+                <span class="pagination-current">
+                    {{ application_on_page.number }} / {{ paginator.num_pages }}
+                </span>
+
+                {% if application_on_page.has_next %}
+                    <a href="?page={{ application_on_page.next_page_number }}" class="pagination-link">Вперед →</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
     {% else %}
-        <div class="content">
-            <div class="image_detail_block">
-                <h3>Вы не вошли в аккаунт</h3>
-                <a class="to_back" href="{% url 'index' %}"><p>Вернуться назад</p></a>
-                <a href="{% url 'login' %}"><h3>войти</h3></a>
-                <a href="{% url 'register' %}"><h3>Зарегестрироваться</h3></a>
+        <div class="guest-container">
+            <div class="card guest-card">
+                <h2 class="guest-title">Требуется авторизация</h2>
+                <p class="guest-text">
+                    Для просмотра профиля и управления заявками необходимо войти в систему.
+                </p>
+
+                <div class="guest-auth-actions">
+                    <a href="{% url 'login' %}" class="btn-guest-login">
+                       Войти
+                    </a>
+                    <a href="{% url 'register' %}" class="btn-guest-register">
+                       Зарегистрироваться
+                    </a>
+                </div>
+
+                <div class="guest-footer">
+                    <a href="{% url 'index' %}" class="guest-back-link">
+                        ← Вернуться на главную
+                    </a>
+                </div>
             </div>
         </div>
     {% endif %}
+
+</div>
 {% endblock %}

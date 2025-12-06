@@ -1,50 +1,91 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Подтверждение на удаление{% endblock %}
+{% block title %}Подтверждение удаления{% endblock %}
 {% block content %}
-    <div class="content-detail">
-        <a class="to_back" href="{% url 'profile' %}"><p>Вернуться назад</p></a>
+    <div class="main_container form-page-container">
+
         {% if user.is_authenticated %}
-            <form action="{% url 'application_delete' pk=application.pk %}" method="post">
-                {% csrf_token %}
+            <div class="card form-card delete-confirm-card">
+                <h2 class="form-title form-title-danger">Подтверждение удаления заявки</h2>
+
                 {% if application.status == 'n' %}
-                    <h1 style="color:red">ВЫ ТОЧНО УВЕРЕНЫ ЧТО ХОТИТЕ УДАЛИТЬ?</h1>
-                	<button type="submit" class="delete_comfirm">ДА!ДА!ДА!ДА!ДА!</button>
-                    <a href="{% url 'profile' %}" style="color: green">нет(</a>
+
+                    <div class="confirm-block">
+                        <h3 class="confirm-warning">
+                            Вы действительно хотите удалить заявку "{{ application.title }}"?
+                        </h3>
+                        <p class="confirm-text">
+                            Это действие нельзя отменить. Удалить можно только заявки в статусе **"Новая"**.
+                        </p>
+
+                        <form action="{% url 'application_delete' pk=application.pk %}" method="post" class="delete-form-actions">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-delete-confirm">
+                                 Да, удалить навсегда
+                            </button>
+                            <a href="{% url 'profile' %}" class="btn-action btn-delete-cancel">
+                                Отмена, вернуться в профиль
+                            </a>
+                        </form>
+                    </div>
+
+                {% else %}
+                    <div class="status-restriction-block">
+                        <h3 class="status-warning-title">Удаление невозможно</h3>
+                        <p class="status-warning-text">
+                            Заявка находится в статусе
+                            <span class="status-value-text status-text-{{ application.status }}">
+                                "{{ application.get_status_display }}"
+                            </span>.
+                            Удалять разрешено только заявки в статусе "Новая".
+                        </p>
+                        <a href="{% url 'profile' %}" class="btn-submit">
+                            ← Вернуться в профиль
+                        </a>
+                    </div>
                 {% endif %}
-            </form>
-            <div class="application-detail">
-                <div class="application_title_content"><h3>{{ application.title }}</h3>
-                    <p>({{ application.date }})</p>
+
+                <div class="detail-application-preview card-details-preview">
+                    <h4 class="preview-title">Детали заявки:</h4>
+
+                    <div class="preview-content-grid">
+                        <div class="preview-image-wrapper">
+                             <img src="{{ application.image.url }}"
+                                 alt="{{ application.title }} image"
+                                 class="preview-image-img">
+                        </div>
+                        <div class="preview-info">
+                            <p class="preview-title-text">{{ application.title }}</p>
+                            <p class="preview-meta-text">Дата: {{ application.date }}</p>
+                            <p class="preview-meta-text">Категория: {{ application.categories }}</p>
+                            <p class="preview-meta-text">
+                                Статус:
+                                <span class="status-value-text status-text-{{ application.status }}">
+                                    {{ application.get_status_display }}
+                                </span>
+                            </p>
+                            <p class="preview-description">{{ application.description|truncatechars:100 }}</p>
+
+                            {% if perms.app.worker %}
+                                <a href="{% url 'application_change' pk=application.pk %}" class="preview-action-link">
+                                    Изменить заявку (Работник)
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-                <div class="application_image_content-detail"><img src="{{ application.image.url }}"
-                                                                   alt="{{ application.title }} image">
-                </div>
-                <div class="application_info">
-                    <p>Статус - {{ application.get_status_display }}</p>
-                    <p>Категория - {{ application.categories }}</p>
-                </div>
-                <div class="application-detail-description">
-                    <p>Описание - {{ application.description }}</p>
-                </div>
-                <div class="application-detail-comment">
-                    {% if application.comment %}
-                        <p>Комментарий - {{ application.comment }}</p>
-                    {% else %}
-                        <p>нет коментария</p>
-                    {% endif %}
+
+            </div>
+        {% else %}
+            <div class="card guest-card logout-card">
+                <h3 class="guest-title guest-title-warning">Требуется вход</h3>
+                <p class="guest-text">Для просмотра этой страницы необходимо войти на сайт.</p>
+
+                <div class="guest-auth-actions">
+                    <a href="{% url 'login' %}" class="btn-guest-login">Войти в аккаунт</a>
+                    <a href="{% url 'index' %}" class="btn-profile btn-back-to-home">На главную</a>
                 </div>
             </div>
-
-            {% if perms.app.worker %}
-                <a href="{% url 'application_change' pk=application.pk %}" class="change">Изменить</a>
-            {% endif %}
-
-        {% else %}
-            <h3>Требуется войти что бы посмотреть заявку</h3>
-            <a href="{% url 'login' %}"><h3>войти</h3></a>
         {% endif %}
     </div>
 {% endblock %}
-
-

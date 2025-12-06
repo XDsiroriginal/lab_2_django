@@ -1,22 +1,46 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Подтверждение на удаление{% endblock %}
+{% block title %}Подтверждение удаления категории{% endblock %}
 {% block content %}
-    <div class="content-detail">
-        <a class="to_back" href="{% url 'profile' %}"><p>Вернуться назад</p></a>
-        {% if user.is_authenticated %}
-            <form action="{% url 'category_delete' pk=categories.pk %}" method="post">
-                {% csrf_token %}
-                    <h1 style="color:red">ВЫ ТОЧНО УВЕРЕНЫ ЧТО ХОТИТЕ УДАЛИТЬ?</h1>
-                	<button type="submit" class="delete_comfirm">ДА!ДА!ДА!ДА!ДА!</button>
-                    <a href="{% url 'profile' %}" style="color: green">нет(</a>
-            </form>
-        <h2>Категория {{ categories.category_full_name }}</h2>
+    <div class="main_container form-page-container">
+        {% if user.is_authenticated and perms.app.worker %}
+            <div class="card form-card delete-confirm-card">
+                <h2 class="form-title form-title-danger">Удаление категории</h2>
+
+                <div class="confirm-block">
+                    <h3 class="confirm-warning">
+                        Вы действительно хотите удалить категорию "{{ categories.category_full_name }}"?
+                    </h3>
+                    <p class="confirm-text">
+                        Это действие **необратимо** и может затронуть связанные заявки.
+                    </p>
+
+                    <form action="{% url 'category_delete' pk=categories.pk %}" method="post" class="delete-form-actions">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-action btn-delete-confirm">
+                            ❌ Да, удалить навсегда
+                        </button>
+                        <a href="{% url 'categories_change' %}" class="btn-action btn-delete-cancel">
+                            Отмена, вернуться к категориям
+                        </a>
+                    </form>
+                </div>
+
+                <div class="form-footer-actions">
+                    <a href="{% url 'admin_profile' %}" class="form-back-link">
+                        ← Вернуться в админ-панель
+                    </a>
+                </div>
+
+            </div>
         {% else %}
-            <h3>Требуется войти что бы посмотреть категорию</h3>
-            <a href="{% url 'login' %}"><h3>войти</h3></a>
+             <div class="card guest-card admin-denied-card">
+                 <h3 class="guest-title form-title-danger">🚫 Доступ запрещен</h3>
+                 <p class="guest-text">У вас нет прав для удаления категории.</p>
+                 <div class="guest-auth-actions">
+                     <a href="{% url 'profile' %}" class="btn-guest-login">Вернуться в свой профиль</a>
+                 </div>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
-
-

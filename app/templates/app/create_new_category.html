@@ -2,27 +2,40 @@
 {% load static %}
 {% block title %}Новая категория{% endblock %}
 {% block content %}
-    <div class="content">
-        <div class="user_authentication_block">
-            <h2>Создание новой категории</h2>
-            {% if user.is_authenticated %}
-                <div class="image_content">
-                    <img src="{% static 'app/img/django.png' %}" alt="крутой джанга">
+    <div class="main_container form-page-container">
+        {% if user.is_authenticated and perms.app.worker %}
+            <div class="card form-card category-form-card">
+                <h2 class="form-title">Создание новой категории</h2>
+
+                <div class="form-image-block form-image-small">
+                    <img src="{% static 'app/img/django.png' %}"
+                         alt="Создать категорию"
+                         class="form-image-img">
                 </div>
-                <div class="login_form_content">
-                    <form method="post" class="login_form">
+
+                <div class="form-content-wrapper">
+                    <form method="post" class="form-django-default">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="hidden" name="next" value="{{ next }}">
-                        <input type="submit" value="Создать категорию">
+                        <button type="submit" class="btn-submit btn-category-create">Создать категорию</button>
                     </form>
-                    <a href="{% url 'profile' %}">назад</a>
+
+                    <div class="form-footer-actions">
+                        <a href="{% url 'categories_change' %}" class="form-back-link">
+                            ← Вернуться к управлению
+                        </a>
+                    </div>
                 </div>
-            {% else %}
-                <p>Вы не выполнели вход на сайт</p>
-                <a href="{% url 'to_logout' %}">Выполнить выход</a>
-                <a href="{% url 'index' %}"><p>Перейти на главную страницу</p></a>
-            {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <div class="card guest-card admin-denied-card">
+                <h3 class="guest-title form-title-danger">🚫 Доступ запрещен</h3>
+                <p class="guest-text">У вас нет прав для создания категории.</p>
+                <div class="guest-auth-actions">
+                    <a href="{% url 'profile' %}" class="btn-guest-login">Вернуться в свой профиль</a>
+                </div>
+            </div>
+        {% endif %}
     </div>
-{% endblock %} 
+{% endblock %}

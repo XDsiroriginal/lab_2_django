@@ -1,54 +1,92 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Картинка{% endblock %}
+{% block title %}Детали заявки: {{ application.title }}{% endblock %}
+
 {% block content %}
-    <div class="content-detail">
+<div class="main_container detail-page-container">
 
-        <div class="application-detail_content">
-            <div class="application-detail_content-content">
-                <div class="application_image_content-detail"><img src="{{ application.image.url }}"
-                                                                   alt="{{ application.title }} image">
+    {% if user.is_authenticated %}
+        <div class="card application-detail-card">
+
+            <div class="detail-content-grid">
+
+                <div class="detail-image-block">
+                    <img src="{{ application.image.url }}"
+                         alt="{{ application.title }} image"
+                         class="detail-main-image">
                 </div>
-            </div>
-            <div class="application-detail_content-content">
-                <div>
-                    <div class="application_title_content"><h3>{{ application.title }}</h3>
-                        <p>({{ application.date }})</p>
+
+                <div class="detail-info-block">
+
+                    <div class="detail-header">
+                        <h2 class="detail-title">{{ application.title }}</h2>
+                        <span class="detail-date">{{ application.date }}</span>
                     </div>
 
-                    <div class="application_info">
-                        <p>Статус - {{ application.get_status_display }}</p>
-                        <p>Категория - {{ application.categories }}</p>
+                    <div class="detail-meta-group">
+                        <div class="detail-meta-item">
+                            <span class="detail-meta-label">Статус:</span>
+                            <span class="status-value-text status-text-{{ application.status }}">
+                                {{ application.get_status_display }}
+                            </span>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="detail-meta-label">Категория:</span>
+                            <span class="detail-meta-value">{{ application.categories }}</span>
+                        </div>
                     </div>
-                    <div class="application-detail-description">
-                        <p>Описание - {{ application.description }}</p>
+
+                    <div class="detail-description">
+                        <h3 class="detail-section-title">Описание</h3>
+                        <p>{{ application.description }}</p>
                     </div>
-                    <div class="application-detail-comment">
+
+                    <div class="detail-comment">
+                        <h3 class="detail-section-title">Комментарий работника</h3>
                         {% if application.comment %}
-                            <p>Комментарий - {{ application.comment }}</p>
+                            <p>{{ application.comment }}</p>
                         {% else %}
-                            <p>нет коментария</p>
+                            <p class="comment-none">Комментарий пока отсутствует.</p>
                         {% endif %}
                     </div>
-                    {% if application.status == 'n' and perms.app.user and perms.app.worker == False %}
-                        <a href="{% url 'application_delete_comfirm' pk=application.pk %}" style="color: red">Удалить
-                            Заявку</a>
-                    {% endif %}
-                    {% if perms.app.worker %}
-                        <a href="{% url 'application_change' pk=application.pk %}" class="change" style="color: green">Изменить</a>
-                    {% endif %}
+
+                    <div class="detail-actions-panel">
+                        {% if application.status == 'n' and perms.app.user and not perms.app.worker %}
+                            <a href="{% url 'application_delete_comfirm' pk=application.pk %}" class="btn-action btn-delete-app">
+                                 Удалить Заявку
+                            </a>
+                        {% endif %}
+
+                        {% if perms.app.worker %}
+                            <a href="{% url 'application_change' pk=application.pk %}" class="btn-action btn-change-app">
+                                ️ Изменить статус/комментарий
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
 
-        <a class="to_back" href="{% url 'profile' %}" style="font-size: 150%"><p>Вернуться назад</p></a>
-        {% if user.is_authenticated %}
+        <div class="detail-back-link-wrapper">
+            <a href="{% url 'profile' %}" class="btn-profile btn-back-to-profile">
+                ← Вернуться в профиль
+            </a>
+        </div>
 
-        {% else %}
-            <h3>Требуется войти что бы посмотреть заявку</h3>
-            <a href="{% url 'login' %}"><h3>войти</h3></a>
-        {% endif %}
-    </div>
+    {% else %}
+        <div class="guest-container">
+            <div class="card guest-card">
+                <h2 class="guest-title">Требуется авторизация</h2>
+                <p class="guest-text">
+                    Для просмотра этой заявки необходимо войти в систему.
+                </p>
+
+                <div class="guest-auth-actions">
+                    <a href="{% url 'login' %}" class="btn-guest-login">Войти</a>
+                    <a href="{% url 'register' %}" class="btn-guest-register">Зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
-
-

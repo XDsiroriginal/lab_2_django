@@ -9,9 +9,9 @@ def validate_cyrillic_and_spaces(value):
         )
 
 def validate_login(value):
-    if not re.fullmatch(r'^[А-Яа-яЁё-]+$', value):
+    if not re.fullmatch(r'^[A-z-]+$', value):
         raise ValidationError(
-            'Поле должно содержать только кириллические буквы, дефисы'
+            'Поле должно содержать только латинские, дефисы'
         )
 
 

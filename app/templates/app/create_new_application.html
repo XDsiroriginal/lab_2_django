@@ -2,27 +2,46 @@
 {% load static %}
 {% block title %}Новая заявка{% endblock %}
 {% block content %}
-    <div class="content">
-        <div class="user_authentication_block">
-            <h2>Создание новой заявки</h2>
+    <div class="main_container form-page-container">
+        <div class="card form-card create-app-card">
+
+            <h2 class="form-title">Создание новой заявки</h2>
+
             {% if user.is_authenticated %}
-                <div class="image_content">
-                    <img src="{% static 'app/img/django.png' %}" alt="крутой джанга">
+
+                <div class="form-image-block form-image-small">
+                    <img src="{% static 'app/img/django.png' %}"
+                         alt="Создать заявку"
+                         class="form-image-img">
                 </div>
-                <div class="login_form_content">
-                    <form method="post" class="login_form" enctype="multipart/form-data">
+
+                <div class="form-content-wrapper">
+                    <form method="post" class="form-django-default" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.as_p }}
+
                         <input type="hidden" name="next" value="{{ next }}">
-                        <input type="submit" value="Оставить заявку">
+                        <button type="submit" class="btn-submit">Оставить заявку</button>
                     </form>
-                    <a href="{% url 'profile' %}">назад</a>
+
+                    <div class="form-footer-actions">
+                        <a href="{% url 'profile' %}" class="form-back-link">
+                            ← Вернуться в профиль
+                        </a>
+                    </div>
                 </div>
+
             {% else %}
-                <p>Вы не выполнели вход на сайт</p>
-                <a href="{% url 'to_logout' %}">Выполнить выход</a>
-                <a href="{% url 'index' %}"><p>Перейти на главную страницу</p></a>
+                <div class="guest-container guest-minimal">
+                    <h3 class="guest-title guest-title-warning">Требуется вход</h3>
+                    <p class="guest-text">Для создания заявки необходимо войти на сайт.</p>
+
+                    <div class="guest-auth-actions">
+                        <a href="{% url 'login' %}" class="btn-guest-login">Войти в аккаунт</a>
+                        <a href="{% url 'index' %}" class="btn-profile btn-back-to-home">На главную</a>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>
-{% endblock %} 
+{% endblock %}

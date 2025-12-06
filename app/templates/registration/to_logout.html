@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Вход{% endblock %}
+{% block title %}Выход из системы{% endblock %}
 {% block content %}
-    <div class="content">
-        <div class="user_authentication_block">
-            <h2>Выход</h2>
+    <div class="main_container form-page-container">
+        <div class="card form-card logout-card">
+            <h2 class="form-title">Выход</h2>
+
             {% if user.is_authenticated %}
+                <p class="logout-confirm-text">Вы уверены, что хотите выйти из аккаунта?</p>
                 <form action="{% url 'logout' %}" method="post" class="logout_form">
                     {% csrf_token %}
-                    <a href="{% url 'profile' %}">Вернуться назад</a>
-                    <input type="submit" value="Выйти">
+                    <div class="logout-actions-group">
+                        <a href="{% url 'profile' %}" class="btn-profile btn-cancel-logout">
+                            ← Остаться
+                        </a>
+                        <button type="submit" class="btn-submit btn-confirm-logout">
+                            Выйти
+                        </button>
+                    </div>
                 </form>
             {% else %}
-                <h2>Выход успешно выполнен</h2>
-                <a href="{% url 'login' %}">Выполнить вход</a>
-                <a href="{% url 'index' %}"> <p>Перейти на главную страницу</p></a>
+                <h2 class="logout-success-title">Выход успешно выполнен</h2>
+                <div class="guest-auth-actions">
+                    <a href="{% url 'login' %}" class="btn-guest-login">Выполнить вход</a>
+                    <a href="{% url 'index' %}" class="btn-guest-register">Перейти на главную</a>
+                </div>
             {% endif %}
         </div>
     </div>

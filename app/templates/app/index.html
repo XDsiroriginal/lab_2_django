@@ -1,33 +1,55 @@
 {% extends "base.html" %}
 {% block title %}Главная страница{% endblock %}
 {% load static %}
+
 {% block content %}
-    <div class="authentication_content">
-        <h1 style="margin-left: 5vw">Заявки</h1>
-        <a href="{% url 'profile' %}"><h3>Профиль</h3></a>
+    <div class="top_bar_container">
+        <div class="header_content">
+            <h1>Заявки</h1>
+            <a href="{% url 'profile' %}" class="btn-profile">
+                <span>Профиль</span>
+            </a>
+        </div>
     </div>
 
-    <div class="main_content">
+    <div class="main_container">
         {% if application_on_page %}
-            {% for applications in application_on_page %}
-                <div class="application">
-                    <div class="application_title_content"><h3>{{ applications.title }}</h3>
-                        <p>({{ applications.date }})</p></div>
-                    <div class="application_image_content"><img src="{{ applications.image.url }}"
-                                                                alt="{{ applications.title }} image">
+            <div class="cards_grid">
+                {% for applications in application_on_page %}
+                    <div class="card">
+                        <div class="card_image_wrapper">
+                            {% if applications.image %}
+                                <img src="{{ applications.image.url }}" alt="{{ applications.title }}">
+                            {% else %}
+                                <div class="no_image">Нет фото</div>
+                            {% endif %}
+                            <div class="card_category_badge">{{ applications.categories.category_full_name }}</div>
+                        </div>
+
+                        <div class="card_content">
+                            <div class="card_header">
+                                <h3 class="card_title">{{ applications.title }}</h3>
+                                <span class="card_date">{{ applications.date }}</span>
+                            </div>
+
+                            <div class="card_footer">
+                                <div class="status_indicator">
+                                    <span class="status_label">Статус:</span>
+                                    <span class="status_value">{{ applications.get_status_display }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="application_info">
-                        <p>Статус - {{ applications.get_status_display }}</p>
-                        <p>Категория - {{ applications.categories.category_full_name }}</p>
-                    </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         {% else %}
-            <p>На сайте нет заявок</p>
+            <div class="empty_state">
+                <p>На сайте пока нет заявок</p>
+            </div>
         {% endif %}
     </div>
 
-    <div class="this_work_content">
-        <p>Сейчвс в работе находится: {{ application_on_work }} работа</p>
+    <div class="stats_bar">
+        <p>Сейчас в работе находится: <strong>{{ application_on_work }}</strong> заявок</p>
     </div>
 {% endblock %}
