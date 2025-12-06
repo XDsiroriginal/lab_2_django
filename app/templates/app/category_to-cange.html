@@ -1,50 +1,54 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% block title %}Управление категориями{% endblock %}
 {% load static %}
-{% block title %}Регистрация{% endblock %}
 {% block content %}
-    <div class="main_container form-page-container">
+    <div class="main_container profile-main-container">
 
-        <div class="card form-card auth-card register-card">
-            <h2 class="form-title">Регистрация нового аккаунта</h2>
+        {% if user.is_authenticated and perms.app.worker %}
 
-            {% if user.is_authenticated %}
-                <div class="auth-message-block">
-                    <p class="auth-text-info">Вы уже выполнили регистрацию и вход.</p>
-                    <div class="guest-auth-actions">
-                        <a href="{% url 'to_logout' %}" class="btn-profile btn-logout">
-                             Выполнить выход
-                        </a>
-                        <a href="{% url 'index' %}" class="btn-profile">
-                            ← На главную
-                        </a>
-                    </div>
+            <div class="card profile-header-card category-management-header">
+                <div class="profile-info-group">
+                    <h2 class="profile-username-title">Управление категориями</h2>
                 </div>
-            {% else %}
-                <div class="form-grid-content">
-
-                    <div class="form-image-block">
-                        <img src="{% static 'app/img/django.png' %}"
-                             alt="Иллюстрация регистрации"
-                             class="form-image-img">
-                    </div>
-
-                    <div class="form-content-wrapper">
-                        <form method="post" class="form-django-default">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <input type="hidden" name="next" value="{{ next }}">
-                            <button type="submit" class="btn-submit btn-register">Зарегистрироваться</button>
-                        </form>
-
-                        <div class="form-footer-actions">
-                            <a href="{% url 'login' %}" class="form-back-link">
-                                Есть аккаунт? Войти в аккаунт
-                            </a>
-                        </div>
-                    </div>
+                <div class="profile-actions">
+                    <a href="{% url 'create_new_category' %}" class="btn-profile btn-create-category">
+                        ➕ Создать категорию
+                    </a>
+                    <a href="{% url 'admin_profile' %}" class="btn-profile">
+                        ← В админ-панель
+                    </a>
                 </div>
-            {% endif %}
+            </div>
 
-        </div>
+            <div class="card category-list-card">
+                <h3 class="category-list-title">Существующие категории:</h3>
+
+                {% if categories %}
+                    <ul class="category-list-ul">
+                        {% for category in categories %}
+                            <li class="category-list-item">
+                                <span class="category-name-text">{{ category.category_full_name }}</span>
+                                <a href="{% url 'categories_delete_change' pk=category.pk %}" class="btn-action btn-category-edit">
+                                    Изменить / Удалить
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="category-none-message">
+                        Категории не найдены. Создайте новую категорию, чтобы начать работу.
+                    </p>
+                {% endif %}
+            </div>
+
+        {% else %}
+            <div class="card guest-card admin-denied-card">
+                 <h3 class="guest-title form-title-danger">Доступ запрещен</h3>
+                 <p class="guest-text">У вас нет прав для управления категориями.</p>
+                 <div class="guest-auth-actions">
+                     <a href="{% url 'profile' %}" class="btn-guest-login">Вернуться в свой профиль</a>
+                 </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
