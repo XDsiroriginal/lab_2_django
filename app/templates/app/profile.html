@@ -6,8 +6,9 @@
         <div class="profile_content">
             <div class="top_bar">
                 <h2>Добро пожаловать {{ user.get_username }}</h2>
-                <a href="{% url 'index' %}">На главную страницу</a>
-                <a href="{% url 'to_logout' %}">выйти из аккаунта</a>
+            </div>
+            <div class="navigations_content">
+                <a href="{% url 'index' %}" style="font-size: 150%">На главную страницу</a>
             </div>
             <div class="main_bar">
                 <div class="user_avatar_and_name">
@@ -50,24 +51,28 @@
                             Вы - зарегестрированный пользователь
                         {% endif %}
                     </p>
+                    <a href="{% url 'to_logout' %}" style="color: red">выйти из аккаунта</a>
                 </div>
             </div>
         </div>
 
         <div class="profile_content">
-            {% if perms.app.user %}
+            {% if perms.app.user and perms.app.worker == False %}
                 <div class="top_bar">
                     <h2>Мои заявки ({{ user.get_username }})</h2>
-                    <a href="{% url 'create_new_application' %}">Создать новую заявку</a>
                 </div>
+
+                <a href="{% url 'create_new_application' %}" style="font-size: 150%">Создать новую заявку</a>
 
                 <div class="filter_content">
                     <p>Фильтрация по статусу</p>
                     <a href="{% url 'profile' %}">Все заявки</a>
-                    <a href="{% url 'profile_filtered' status='n' %}">Новая заявка</a>
-                    <a href="{% url 'profile_filtered' status='w' %}">Принята в работу</a>
-                    <a href="{% url 'profile_filtered' status='c' %}">Выполнена</a>
-                    <a href="{% url 'profile_filtered' status='r' %}">Отклонена</a>
+                    <div>
+                        <a href="{% url 'profile_filtered' status='n' %}">Новая заявка</a>
+                        <a href="{% url 'profile_filtered' status='w' %}">Принята в работу</a>
+                        <a href="{% url 'profile_filtered' status='c' %}">Выполнена</a>
+                        <a href="{% url 'profile_filtered' status='r' %}">Отклонена</a>
+                    </div>
                 </div>
 
                 <div class="application_list">
@@ -105,10 +110,12 @@
             {% else %}
 
                 <div class="top_bar">
-                    <h2>Мои заявки ({{ user.get_username }})</h2>
-                    <div class="filter_content">
-                        <p>Фильтрация по статусу</p>
-                        <a href="{% url 'profile' %}">Все заявки</a>
+                    <h2>Заявки пользователей ({{ user.get_username }})</h2>
+                </div>
+                <div class="filter_content">
+                    <p>Фильтрация по статусу</p>
+                    <a href="{% url 'profile' %}">Все заявки</a>
+                    <div>
                         <a href="{% url 'profile_filtered' status='n' %}">Новая заявка</a>
                         <a href="{% url 'profile_filtered' status='w' %}">Принята в работу</a>
                         <a href="{% url 'profile_filtered' status='c' %}">Выполнена</a>
@@ -146,11 +153,13 @@
                 <div class="pagination">
                     <div class="paginator_content">
                         {% if application_on_page.has_previous %}
-                            <a href="?page={{ application_on_page.previous_page_number }}">предыдущая</a>
+                            <a href="?page={{ application_on_page.previous_page_number }}" class="pagination_a">предыдущая</a>
                         {% endif %}
-                        <a href="?page=1">Страница {{ application_on_page.number }} из {{ paginator.num_pages }}</a>
+                        <a href="?page=1" class="pagination_a">Страница {{ application_on_page.number }}
+                            из {{ paginator.num_pages }}</a>
                         {% if application_on_page.has_next %}
-                            <a href="?page={{ application_on_page.next_page_number }}">следующая</a>
+                            <a href="?page={{ application_on_page.next_page_number }}"
+                               class="pagination_a">следующая</a>
                         {% endif %}
                     </div>
                 </div>
@@ -159,9 +168,9 @@
 
     {% else %}
         <div class="content">
-            <a class="to_back" href="{% url 'index' %}"><p>Вернуться назад</p></a>
             <div class="image_detail_block">
                 <h3>Вы не вошли в аккаунт</h3>
+                <a class="to_back" href="{% url 'index' %}"><p>Вернуться назад</p></a>
                 <a href="{% url 'login' %}"><h3>войти</h3></a>
                 <a href="{% url 'register' %}"><h3>Зарегестрироваться</h3></a>
             </div>

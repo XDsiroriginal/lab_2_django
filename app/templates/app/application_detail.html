@@ -3,35 +3,46 @@
 {% block title %}Картинка{% endblock %}
 {% block content %}
     <div class="content-detail">
-        <a class="to_back" href="{% url 'profile' %}"><p>Вернуться назад</p></a>
-        {% if user.is_authenticated %}
-            <a href="{% url 'application_delete_comfirm' pk=application.pk%}" style="color: red">Удалить</a>
-            <div class="application-detail">
-                <div class="application_title_content"><h3>{{ application.title }}</h3>
-                    <p>({{ application.date }})</p>
-                </div>
+
+        <div class="application-detail_content">
+            <div class="application-detail_content-content">
                 <div class="application_image_content-detail"><img src="{{ application.image.url }}"
                                                                    alt="{{ application.title }} image">
                 </div>
-                <div class="application_info">
-                    <p>Статус - {{ application.get_status_display }}</p>
-                    <p>Категория - {{ application.categories }}</p>
-                </div>
-                <div class="application-detail-description">
-                    <p>Описание - {{ application.description }}</p>
-                </div>
-                <div class="application-detail-comment">
-                    {% if application.comment %}
-                        <p>Комментарий - {{ application.comment }}</p>
-                    {% else %}
-                        <p>нет коментария</p>
+            </div>
+            <div class="application-detail_content-content">
+                <div>
+                    <div class="application_title_content"><h3>{{ application.title }}</h3>
+                        <p>({{ application.date }})</p>
+                    </div>
+
+                    <div class="application_info">
+                        <p>Статус - {{ application.get_status_display }}</p>
+                        <p>Категория - {{ application.categories }}</p>
+                    </div>
+                    <div class="application-detail-description">
+                        <p>Описание - {{ application.description }}</p>
+                    </div>
+                    <div class="application-detail-comment">
+                        {% if application.comment %}
+                            <p>Комментарий - {{ application.comment }}</p>
+                        {% else %}
+                            <p>нет коментария</p>
+                        {% endif %}
+                    </div>
+                    {% if application.status == 'n' and perms.app.user and perms.app.worker == False %}
+                        <a href="{% url 'application_delete_comfirm' pk=application.pk %}" style="color: red">Удалить
+                            Заявку</a>
+                    {% endif %}
+                    {% if perms.app.worker %}
+                        <a href="{% url 'application_change' pk=application.pk %}" class="change" style="color: green">Изменить</a>
                     {% endif %}
                 </div>
             </div>
+        </div>
 
-            {% if perms.app.worker %}
-                <a href="{% url 'application_change' pk=application.pk %}" class="change">Изменить</a>
-            {% endif %}
+        <a class="to_back" href="{% url 'profile' %}" style="font-size: 150%"><p>Вернуться назад</p></a>
+        {% if user.is_authenticated %}
 
         {% else %}
             <h3>Требуется войти что бы посмотреть заявку</h3>

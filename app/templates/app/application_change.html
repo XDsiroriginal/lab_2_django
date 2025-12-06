@@ -9,14 +9,14 @@
                 <img src="{{ application.image.url }}" alt="{{ application.title }} image">
             </div>
             <div class="login_form_content">
-                <p>{{ user.first_name }}</p>
+                <p>{{ error }}</p>
                 <form method="post" class="login_form" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="hidden" name="next" value="{{ next }}">
                     <input type="submit" value="Сохранить">
                 </form>
-                <a href="{{ request.META.HTTP_REFERER }}">назад</a>
+                <a href="{% url 'profile' %}">назад</a>
             </div>
         </div>
     </div>

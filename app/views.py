@@ -29,7 +29,7 @@ def index(request):
         {
             'application_on_page': application_on_page,
             'paginator': paginator,
-            'application_on_work' : application_on_work,
+            'application_on_work': application_on_work,
         }
     )
 
@@ -63,13 +63,12 @@ def to_profile(request, status=None):
             if status:
                 all_applications = application.objects.all().filter(status=status).order_by('-date')
             else:
-                all_applications= application.objects.all()
+                all_applications = application.objects.all()
         else:
             if status:
                 all_applications = user.application_set.filter(status=status).order_by('-date')
             else:
-                all_applications= user.application_set.order_by('-date').all()
-
+                all_applications = user.application_set.order_by('-date').all()
 
         profile = user.profile
         application_per_page = 3
@@ -97,7 +96,6 @@ def to_profile(request, status=None):
             request,
             'app/profile.html',
         )
-
 
 
 def change_user_avatar(request, pk):
@@ -292,23 +290,43 @@ def application_change(request, pk):
     if request.method == 'POST':
         form = ApplicationChangeForm(request.POST, request.FILES, instance=this_application)
         if form.is_valid():
-            form.save()
-            return redirect('profile')
+            this_status = form.cleaned_data['status']
+            this_comment = form.cleaned_data['comment']
+            this_image = form.cleaned_data['image']
+
+            if this_status == 'w' and this_comment:
+                form.save()
+                return redirect('profile')
+            else:
+                error = 'у вас нет комента'
+                return render(request, 'app/application_change.html', {'form': form, 'application': this_application, 'error': error})
+
+            if this_status == 'c' and this_image:
+                form.save()
+                return redirect('profile')
+            else:
+                error = 'у вас нет изображения'
+                return render(request, 'app/application_change.html', {'form': form, 'application': this_application, 'error': error})
+
         else:
             return render(request, 'app/application_change.html', {'form': form, 'application': this_application})
     else:
         form = ApplicationChangeForm(instance=this_application)
         return render(request, 'app/application_change.html', {'form': form, 'application': this_application})
 
+
+
 def categories_change_view(request):
     categories = Category.objects.all()
     user = request.user
     profile = user.profile
-    return render(request, 'app/category_to-cange.html', {'profile' : profile, 'categories': categories})
+    return render(request, 'app/category_to-cange.html', {'profile': profile, 'categories': categories})
+
 
 def application_delete_comfirm(request, pk):
     this_application = get_object_or_404(application, pk=pk)
     return render(request, 'app/application_delete_comfirm.html', {'application': this_application})
+
 
 def categories_delete_change(request, pk):
     categories = Category.objects.get(pk=pk)
@@ -325,9 +343,11 @@ def categories_delete_change(request, pk):
         form = CategoryChangeForm(initial={'categories': categories})
     return render(request, 'app/categories_delete_change.html', {'categories': categories, 'form': form})
 
+
 def categories_delete_confirm(request, pk):
     categories = Category.objects.get(pk=pk)
     return render(request, 'app/categories_delete_confirm.html', {'categories': categories})
+
 
 def category_delete(request, pk):
     this_category = Category.objects.get(pk=pk)

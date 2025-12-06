@@ -3,9 +3,10 @@
 {% load static %}
 {% block content %}
     <div class="authentication_content">
+        <h1 style="margin-left: 5vw">Заявки</h1>
         <a href="{% url 'profile' %}"><h3>Профиль</h3></a>
     </div>
-    <h1 style="margin-left: 5vw">Заявки</h1>
+
     <div class="main_content">
         {% if application_on_page %}
             {% for applications in application_on_page %}
@@ -24,20 +25,9 @@
         {% else %}
             <p>На сайте нет заявок</p>
         {% endif %}
-
     </div>
 
-    <div class="pagination" style="margin-left: 5vw">
-        <div class="paginator_content">
-            {% if application_on_page.has_previous %}
-                <a href="?page={{ application_on_page.previous_page_number }}">предыдущая</a>
-            {% endif %}
-            <a href="?page=1">Страница {{ application_on_page.number }} из {{ paginator.num_pages }}</a>
-            {% if application_on_page.has_next %}
-                <a href="?page={{ application_on_page.next_page_number }}">следующая</a>
-            {% endif %}
-        </div>
+    <div class="this_work_content">
+        <p>Сейчвс в работе находится: {{ application_on_work }} работа</p>
     </div>
-
-    <p style="margin-left: 5vw">Сейчвс в работе находится: {{ application_on_work }} работа</p>
 {% endblock %}

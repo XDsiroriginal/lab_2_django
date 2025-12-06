@@ -53,21 +53,17 @@ class ApplicationForm(forms.ModelForm):
 class ApplicationChangeForm(forms.ModelForm):
     class Meta:
         model = application
-        fields = ('status', 'categories', 'comment', 'image')
+        fields = ('status', 'comment', 'image')
         labels = {
             'status': 'Изменить статус заявки',
-            'categories': 'Изменит категорию',
             'comment': 'Коментарий',
             'image': 'новое изображение'
         }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.status != 'n':
             self.fields['status'].disabled = True
-        if self.instance and self.instance.status == 'n':
-            self.fields['image'].required=True
-        if self.instance and self.instance.status == 'n':
-            self.fields['comment'].required=True
 
 class CreateNewCategory(forms.ModelForm):
     class Meta:
