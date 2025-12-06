@@ -12,7 +12,7 @@ urlpatterns = [
     path('profile/<str:status>/', views.to_profile, name='profile_filtered'),
 
     path('profile/admin', views.admin_profile_view, name='admin_profile'),
-    path('', views.index, name='index'),  # Добавим сюда index
+    path('', views.index, name='index'),
 
     path('accounts/register', views.register_view, name='register'),
     path('accounts/login/', LoginView.as_view(next_page='index'), name='login'),
@@ -36,7 +36,7 @@ urlpatterns = [
          name='application_delete_comfirm'),
 
     path('profile/admin/categories/', views.categories_change_view, name='categories_change'),
-    path('profile/admin/categories/create_new_category', views.create_new_application, name='create_new_application'),
+    path('profile/admin/categories/create_new_category', views.create_new_category, name='create_new_category'),
     path('app/profile/admin/categories/change/<int:pk>/', views.categories_delete_change, name='categories_delete_change'),
     path('app/profile/admin/categories/change/<int:pk>/delete_comfirm/', views.categories_delete_confirm, name='categories_delete_confirm'),
     path('app/profile/admin/categories/change/<int:pk>/delete/', views.category_delete, name='category_delete'),

@@ -244,7 +244,7 @@ def admin_profile_view(request):
         )
 
 
-def create_new_application(request):
+def create_new_category(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -260,17 +260,17 @@ def create_new_application(request):
     return render(request, 'app/create_new_category.html', {'form': form})
 
 
-def create_new_category(request):
+def create_new_application(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
-            new_application = form.save()
+            new_application = form.save(commit=False)
             new_application.username = request.user
             new_application.save()
-            return redirect('categories_change')
+            return redirect('profile')
     else:
         form = ApplicationForm()
 
