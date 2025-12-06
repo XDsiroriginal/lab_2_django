@@ -8,8 +8,13 @@ def validate_cyrillic_and_spaces(value):
             'Поле должно содержать только кириллические буквы, пробелы и дефисы.'
         )
 
-from django.core.validators import FileExtensionValidator
-from django.core.exceptions import ValidationError
+def validate_login(value):
+    if not re.fullmatch(r'^[А-Яа-яЁё-]+$', value):
+        raise ValidationError(
+            'Поле должно содержать только кириллические буквы, дефисы'
+        )
+
+
 
 def validate_image(value):
     max_size = 2 * 1024 * 1024

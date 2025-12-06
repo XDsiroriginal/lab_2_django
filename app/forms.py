@@ -1,3 +1,4 @@
+from cProfile import label
 from random import choices
 from unicodedata import category
 
@@ -10,6 +11,7 @@ from .validators import validate_cyrillic_and_spaces, validate_image
 from .models import application, Category
 
 class RegisterForm(UserCreationForm):
+    username = forms.CharField(required=True, label='Логин пользователя', validators=[validate_cyrillic_and_spaces])
     email = forms.EmailField(required=True, label='Электронная почта')
     first_name = forms.CharField(required=True, label='Имя', validators=[validate_cyrillic_and_spaces])
     last_name = forms.CharField(required=True, label='Фамилия', validators=[validate_cyrillic_and_spaces])
@@ -34,21 +36,6 @@ class EmailChangeForm(forms.Form):
 
 class PatronymicChangeForm(forms.Form):
     patronymic = forms.CharField(required=True, label='Отчество', validators=[validate_cyrillic_and_spaces])
-
-# class ApplicationForm(forms.Form):
-#     title = forms.CharField(required=True, label='Название заявки')
-#     description = forms.CharField(required=True, label='Введите описание заявки')
-#     categories = forms.ChoiceField(
-#         required=True,
-#         label='Категория заявки',
-#         choices=[
-#             ('3', '3D Дизайн'),
-#             ('2', '2D Дизайн'),
-#             ('e', 'Эскиз'),
-#             ('l', 'Логотип'),
-#         ]
-#     )
-#     image = forms.ImageField(required=True, validators=[validate_image])
 
 class ApplicationForm(forms.ModelForm):
     class Meta:
